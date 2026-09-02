@@ -750,21 +750,29 @@ TEST(Functions, Load) {
     setup.build_settings()->SetRootPath(temp_dir.GetPath());
     setup.scope()->set_source_dir(SourceDir("//"));
 
+    base::WriteFile(temp_dir.GetPath().AppendASCII("foo.cc"), "", 0);
+
     std::string scl_content = R"scl(
 load("//builtins:rules.scl", "static_library")
 
 def my_rule_impl(ctx):
-  pass
+  return [DefaultInfo(files = depset([ctx.file.input]))]
 
 my_rule = rule(
   implementation = my_rule_impl,
-  attrs = {"my_attr": attr.string()},
+  attrs = {
+    "my_attr": attr.string(),
+    "input": attr.label(allow_single_file = True, mandatory = True),
+  },
 )
 
 my_rule_extension = rule(
   implementation = my_rule_impl,
   parent = static_library,
-  attrs = {"my_attr": attr.string()},
+  attrs = {
+    "my_attr": attr.string(),
+    "input": attr.label(allow_single_file = True, mandatory = True),
+  },
 )
 
 hello = "hello"
@@ -803,10 +811,12 @@ assert(sum() {
 
 my_rule_extension("foo_extension") {
   my_attr = "bar"
+  input = "foo.cc"
 }
 
 my_rule("foo") {
   my_attr = "bar"
+  input = "foo.cc"
 }
 )gn");
       ASSERT_SUCCESS(input);
@@ -827,15 +837,29 @@ my_rule("foo") {
       ASSERT_TRUE(items);
       ASSERT_EQ(2u, items->size());
 
-      const Target* target_extension = (*items)[0]->AsTarget();
+      Target* target_extension = const_cast<Target*>((*items)[0]->AsTarget());
       ASSERT_TRUE(target_extension);
+      target_extension->SetToolchain(setup.toolchain());
       EXPECT_EQ(Target::STATIC_LIBRARY, target_extension->output_type());
       EXPECT_EQ("//:foo_extension",
                 target_extension->label().GetUserVisibleName(false));
 
-      const Target* target_custom = (*items)[1]->AsTarget();
+      Target* target_custom = const_cast<Target*>((*items)[1]->AsTarget());
       ASSERT_TRUE(target_custom);
+      target_custom->SetToolchain(setup.toolchain());
       EXPECT_EQ("//:foo", target_custom->label().GetUserVisibleName(false));
+
+      Err resolve_err;
+      target_extension->OnResolved(&resolve_err);
+      ASSERT_SUCCESS(resolve_err);
+      EXPECT_EQ(2u, target_extension->computed_outputs().size());
+      EXPECT_EQ(target_extension->computed_outputs(),
+                (std::vector<OutputFile>{OutputFile("obj/libfoo_extension.a"),
+                                         OutputFile("../../foo.cc")}));
+      target_custom->OnResolved(&resolve_err);
+      ASSERT_SUCCESS(resolve_err);
+      EXPECT_EQ(target_custom->computed_outputs(),
+                std::vector<OutputFile>{OutputFile("../../foo.cc")});
     }
 
     // Verify failure when loading a nonexistent variable.
@@ -908,7 +932,7 @@ sum_wrapper(1, 2, 3) {
       fail_input.parsed()->Execute(setup.scope(), &err);
       ASSERT_TRUE(err.has_error());
       EXPECT_EQ(
-          "ERROR at //:rules.scl:24:10: Found `d` extra named parameter(s) for "
+          "ERROR at //:rules.scl:30:10: Found `d` extra named parameter(s) for "
           "call to //:rules.scl.sum\n"
           "  return sum(*args, **kwargs)\n"
           "         ^-------------------\n"

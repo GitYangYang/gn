@@ -2,11 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-use std::ptr::NonNull;
+use std::{cell::UnsafeCell, ptr::NonNull};
 
 use allocative::Allocative;
 use starlark::values::ProvidesStaticType;
-use types::{LabelRef, PackageRef, PathResolver};
+use types::{LabelRef, PackageRef, PathResolver, TargetRef as _};
 
 use crate::{errors::Error, Scope};
 
@@ -14,6 +14,10 @@ enum EvalContextKind {
     BzlFile,
     Macro {
         scope: NonNull<Scope>,
+        err: NonNull<crate::bridge::Err>,
+    },
+    RuleImpl {
+        state: UnsafeCell<types::CtxState<crate::TargetRef>>,
         err: NonNull<crate::bridge::Err>,
     },
 }
@@ -29,6 +33,7 @@ pub struct EvalContext {
 }
 
 impl EvalContext {
+    /// Creates a new `EvalContext` for evaluating a .bzl file.
     pub fn new_bzl_file(
         session: &'static crate::session::Session,
         package: &'static PackageRef,
@@ -40,6 +45,7 @@ impl EvalContext {
         }
     }
 
+    /// Creates a new `EvalContext` for macro evaluation within a GN scope.
     pub fn new_macro(
         session: &'static crate::session::Session,
         scope: NonNull<Scope>,
@@ -57,6 +63,38 @@ impl EvalContext {
             session,
             package,
             kind: EvalContextKind::Macro { scope, err },
+        }
+    }
+
+    /// Creates a new `EvalContext` for rule implementation execution.
+    pub fn new_rule_impl(
+        session: &'static crate::session::Session,
+        target: crate::TargetRef,
+        err: NonNull<crate::bridge::Err>,
+    ) -> Self {
+        let target_package = target.0.label().package();
+        // Safety: Package paths in GN scopes/targets are interned and valid for the
+        // build session.
+        let package: &'static types::PackageRef =
+            unsafe { types::util::extend_lifetime(target_package) };
+
+        Self {
+            session,
+            package,
+            kind: EvalContextKind::RuleImpl {
+                state: UnsafeCell::new(types::CtxState::new(target)),
+                err,
+            },
+        }
+    }
+
+    /// Returns the error pointer associated with this context, if any.
+    pub fn err(&self) -> Option<NonNull<crate::bridge::Err>> {
+        match &self.kind {
+            EvalContextKind::Macro { err, .. } | EvalContextKind::RuleImpl { err, .. } => {
+                Some(*err)
+            },
+            EvalContextKind::BzlFile => None,
         }
     }
 }
@@ -85,7 +123,10 @@ impl types::EvalContext for EvalContext {
                 unsafe { scope.as_ref() }.settings().toolchain()
             },
             EvalContextKind::BzlFile => {
-                unreachable!("current_toolchain is only available during macro evaluation")
+                unreachable!("There is no current file during bzl file evaluation")
+            },
+            EvalContextKind::RuleImpl { .. } => {
+                self.require_rule_impl().unwrap().target.toolchain()
             },
         }
     }
@@ -109,8 +150,17 @@ impl types::EvalContext for EvalContext {
             .ok_or_else(|| Error::RequiresBzlFile.into())
     }
 
+    // EvalContext uses interior mutability to provide access to the mutable state.
+    #[allow(clippy::mut_from_ref)]
     fn require_rule_impl(&self) -> starlark::Result<&mut types::CtxState<crate::TargetRef>> {
-        todo!()
+        match &self.kind {
+            EvalContextKind::RuleImpl { state, .. } => {
+                // Safety: The eval context is single-threaded, so we cannot have multiple
+                // references at the same time.
+                Ok(unsafe { &mut *state.get() })
+            },
+            _ => Err(Error::RequiresRuleImpl.into()),
+        }
     }
 }
 
@@ -158,6 +208,9 @@ impl attr::traits::EvalContextAttrExt for EvalContext {
                     rule: typed_rule,
                     attrs,
                 }),
+            providers: Default::default(),
         }))
     }
 }
+
+rule::impl_ctx_methods!(EvalContext);
