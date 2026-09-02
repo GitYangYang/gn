@@ -84,7 +84,12 @@ impl types::TargetRef for TargetRef {
     }
 
     fn outputs(&self) -> Vec<types::File> {
-        todo!()
+        self.0
+            .cxx
+            .computed_outputs()
+            .iter()
+            .map(|f| f.to_rust())
+            .collect()
     }
 
     fn target_out_dir(
