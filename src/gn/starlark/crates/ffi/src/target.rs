@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+use std::cell::OnceCell;
+
 use starlark::values::FrozenValueTyped;
 
 use crate::{eval_context::EvalContext, TargetRef};
@@ -17,6 +19,55 @@ pub struct Target {
     // reference to starlark targets.
     pub(crate) cxx: &'static crate::bridge::CxxTarget,
     pub(crate) starlark: Option<StarlarkTarget>,
+    pub(crate) providers: OnceCell<providers::Providers>,
+}
+
+impl Target {
+    /// Executes the rule implementation for this target if it has a custom
+    /// Starlark rule.
+    pub fn execute_rule_impl(
+        &self,
+        session: &'static crate::Session,
+        mut err: std::pin::Pin<&mut crate::bridge::Err>,
+    ) -> &'static str {
+        let Some(starlark) = &self.starlark else {
+            return "";
+        };
+        if !starlark.rule.has_implementation() {
+            return "";
+        }
+        // Safety: The Err reference is valid and non-null for the duration of the
+        // invocation.
+        let err_ptr = unsafe { std::ptr::NonNull::new_unchecked(err.as_mut().get_unchecked_mut()) };
+        // Safety: Targets in GN are pinned in the session and outlive rule execution.
+        let static_self: &'static Self = unsafe { types::util::extend_lifetime(self) };
+        let target_ref = TargetRef(static_self);
+        let res = rule::run(&target_ref, |t| {
+            crate::eval_context::EvalContext::new_rule_impl(session, *t, err_ptr)
+        })
+        .and_then(providers::Providers::try_from);
+        if let Some(providers) = err.handle(res) {
+            let phony = providers
+                .outputs_phony
+                .as_ref()
+                .map(|f| f.as_str())
+                .unwrap_or_default();
+            self.providers
+                .set(providers)
+                .expect("Rules can only be executed once");
+            phony
+        } else {
+            ""
+        }
+    }
+
+    /// Returns the providers produced by the rule implementation for this
+    /// target.
+    pub fn providers(&self) -> &providers::Providers {
+        self.providers
+            .get()
+            .expect("Providers should only be requested after being set")
+    }
 }
 
 impl std::ops::Deref for Target {
