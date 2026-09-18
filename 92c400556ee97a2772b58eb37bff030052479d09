@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e738f552_73c8c660",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-18T08:08:15Z",
+      "side": 1,
+      "message": "`\u003d`?\nOr set sources before this block?",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df774f88_dbaf0a9b",
+        "filename": "src/gn/build_file_editor.cc",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-18T08:08:15Z",
+      "side": 1,
+      "message": "Can we use range for?",
+      "fixSuggestions": [
+        {
+          "fixId": "2482a880_2ae74375",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gn/build_file_editor.cc",
+              "range": {
+                "startLine": 390,
+                "startChar": 0,
+                "endLine": 392,
+                "endChar": 0
+              },
+              "replacement": "  for (const auto* node : stack_) {\n    if (node-\u003eAsFunctionCall()) {\n"
+            },
+            {
+              "path": "src/gn/build_file_editor.cc",
+              "range": {
+                "startLine": 398,
+                "startChar": 0,
+                "endLine": 399,
+                "endChar": 0
+              },
+              "replacement": "    const auto* condition \u003d node-\u003eAsCondition();\n"
+            },
+            {
+              "path": "src/gn/build_file_editor.cc",
+              "range": {
+                "startLine": 402,
+                "startChar": 0,
+                "endLine": 403,
+                "endChar": 0
+              },
+              "replacement": "      if (node \u003d\u003d chain.back()-\u003eif_false()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6138bec5_d3be90c3",
+        "filename": "src/gn/commands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-18T08:08:15Z",
+      "side": 1,
+      "message": "initialize this with nullptr?",
+      "range": {
+        "startLine": 137,
+        "startChar": 16,
+        "endLine": 137,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f54d0ddb_e8932e49",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gn/commands.h",
+              "range": {
+                "startLine": 137,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "  const Target* target \u003d nullptr;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e26673e9_d7143969",
+        "filename": "src/gn/commands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-18T08:08:15Z",
+      "side": 1,
+      "message": "This is redundant?",
+      "range": {
+        "startLine": 147,
+        "startChar": 40,
+        "endLine": 147,
+        "endChar": 54
+      },
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
