@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/strings/string_split.h"
+#include "gn/build_file_editor.h"
 #include "gn/commands.h"
 #include "gn/config_values_extractors.h"
 #include "gn/edit_command.h"
@@ -477,7 +478,8 @@ SuggestResult OutputSuggestions(const std::vector<const Target*>& all_targets,
         }
       }
       if (res != ApplyResult::kAmbiguous) {
-        auto edit_result = RunEditImpl(edit.Args(), *setup);
+        std::vector<BuildFile> build_files;
+        auto edit_result = RunEditImpl(edit.Args(), *setup, build_files);
         if (!edit_result.has_value() ||
             !edit_result.value().second.warnings.empty()) {
           // Warnings should be treated as errors.
