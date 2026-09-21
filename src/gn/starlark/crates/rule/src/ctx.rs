@@ -20,6 +20,10 @@ use crate::FrozenRule;
 pub struct Ctx<'v, C: EvalContextAttrExt> {
     /// Contains ctx.attr/files/file
     attrs: CtxAttr<'v>,
+    /// Target label.
+    label: Value<'v>,
+    /// The actions object.
+    actions: Value<'v>,
     /// The rule currently being evaluated.
     /// If you have a parent and child rule, this will start as [child], then
     /// when you call ctx.super() it will be [child, parent].
@@ -28,9 +32,16 @@ pub struct Ctx<'v, C: EvalContextAttrExt> {
 }
 
 impl<'v, C: EvalContextAttrExt> Ctx<'v, C> {
-    pub fn new(attrs: CtxAttr<'v>, rule: &'v FrozenRule<C>) -> Self {
+    pub fn new(
+        attrs: CtxAttr<'v>,
+        rule: &'v FrozenRule<C>,
+        label: Value<'v>,
+        actions: Value<'v>,
+    ) -> Self {
         Self {
             attrs,
+            label,
+            actions,
             rule_stack: RefCell::new(vec![rule]),
         }
     }
@@ -70,6 +81,8 @@ unsafe impl<'v, C: EvalContextAttrExt> starlark::values::Trace<'v> for Ctx<'v, C
         self.attrs.attr.trace(tracer);
         self.attrs.files.trace(tracer);
         self.attrs.file.trace(tracer);
+        self.label.trace(tracer);
+        self.actions.trace(tracer);
     }
 }
 
@@ -90,15 +103,23 @@ where
 
     fn get_attr(&self, attribute: &str, _heap: Heap<'v>) -> Option<Value<'v>> {
         match attribute {
+            "actions" => Some(self.actions),
             "attr" => Some(self.attrs.attr),
             "files" => Some(self.attrs.files),
             "file" => Some(self.attrs.file),
+            "label" => Some(self.label),
             _ => None,
         }
     }
 
     fn dir_attr(&self) -> Vec<String> {
-        vec!["attr".to_owned(), "files".to_owned(), "file".to_owned()]
+        vec![
+            "actions".to_owned(),
+            "attr".to_owned(),
+            "files".to_owned(),
+            "file".to_owned(),
+            "label".to_owned(),
+        ]
     }
 }
 
@@ -139,11 +160,21 @@ macro_rules! impl_ctx_methods {
             }
         }
 
+        $crate::impl_actions_methods!($ctx_type);
+
         impl $crate::CtxMethods for $ctx_type {
             fn methods() -> &'static starlark::environment::Methods {
                 static RES: starlark::environment::MethodsStatic =
                     starlark::environment::MethodsStatic::new("Ctx", |builder| {
                         ctx_methods(builder);
+                    });
+                RES.methods()
+            }
+
+            fn actions_methods() -> &'static starlark::environment::Methods {
+                static RES: starlark::environment::MethodsStatic =
+                    starlark::environment::MethodsStatic::new("ctx.actions", |builder| {
+                        actions_methods(builder);
                     });
                 RES.methods()
             }
