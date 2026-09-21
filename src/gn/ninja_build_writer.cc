@@ -19,6 +19,7 @@
 #include "gn/builder.h"
 #include "gn/err.h"
 #include "gn/escape.h"
+#include "gn/ffi/bridge.h"
 #include "gn/filesystem_utils.h"
 #include "gn/input_file_manager.h"
 #include "gn/loader.h"
@@ -354,6 +355,16 @@ void NinjaBuildWriter::WriteNinjaRules() {
   // Other files read by the build.
   std::vector<base::FilePath> other_files = g_scheduler->GetGenDependencies();
 
+  const base::FilePath build_path =
+      build_settings_->build_dir().Resolve(build_settings_->root_path());
+
+  if (build_settings_->has_starlark_session()) {
+    for (const auto& file : build_settings_->starlark_session().loaded()) {
+      other_files.push_back(
+          build_path.Append(UTF8ToFilePath(std::string_view(file))));
+    }
+  }
+
   const InputFileManager* input_file_manager =
       g_scheduler->input_file_manager();
 
@@ -362,9 +373,6 @@ void NinjaBuildWriter::WriteNinjaRules() {
 
   input_file_manager->AddAllPhysicalInputFileNamesToVectorSetSorter(&sorter);
   sorter.Add(other_files.begin(), other_files.end());
-
-  const base::FilePath build_path =
-      build_settings_->build_dir().Resolve(build_settings_->root_path());
 
   EscapeOptions depfile_escape;
   depfile_escape.mode = ESCAPE_DEPFILE;

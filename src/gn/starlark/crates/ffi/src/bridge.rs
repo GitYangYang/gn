@@ -350,6 +350,8 @@ mod dummy {
             err: Pin<&mut Err>,
         );
 
+        fn loaded(self: &Session) -> Vec<&'static str>;
+
         type OwnedFrozenValue;
         #[rust_name = "clone_cxx"]
         fn clone(self: &OwnedFrozenValue) -> Box<OwnedFrozenValue>;
