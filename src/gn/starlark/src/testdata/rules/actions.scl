@@ -1,0 +1,94 @@
+ActionInfo = provider(fields = ["out_file"])
+
+def _write_rule_impl(ctx):
+  out = ctx.actions.declare_file("written.txt")
+  ctx.actions.write(
+    output = out,
+    content = "generated content",
+  )
+  return [ActionInfo(out_file = out)]
+
+write_rule = rule(
+  implementation = _write_rule_impl,
+)
+
+def _args_rule_impl(ctx):
+  cmd_args = ctx.actions.args()
+  cmd_args.add("--flag")
+  out = ctx.actions.declare_file("args_out.txt")
+  ctx.actions.write(
+    output = out,
+    content = "content",
+  )
+  return [ActionInfo(out_file = out)]
+
+args_rule = rule(
+  implementation = _args_rule_impl,
+)
+
+def _label_rule_impl(ctx):
+  out = ctx.actions.declare_file(ctx.label.name + ".txt")
+  ctx.actions.write(
+    output = out,
+    content = ctx.label.package,
+  )
+  return [ActionInfo(out_file = out)]
+
+label_rule = rule(
+  implementation = _label_rule_impl,
+)
+
+def _empty_filename_rule_impl(ctx):
+  ctx.actions.declare_file("")
+  return []
+
+empty_filename_rule = rule(
+  implementation = _empty_filename_rule_impl,
+)
+
+def _duplicate_declare_file_rule_impl(ctx):
+  ctx.actions.declare_file("dup.txt")
+  ctx.actions.declare_file("dup.txt")
+  return []
+
+duplicate_declare_file_rule = rule(
+  implementation = _duplicate_declare_file_rule_impl,
+)
+
+def _already_generated_rule_impl(ctx):
+  out = ctx.actions.declare_file("gen.txt")
+  ctx.actions.write(
+    output = out,
+    content = "first",
+  )
+  ctx.actions.write(
+    output = out,
+    content = "second",
+  )
+  return []
+
+already_generated_rule = rule(
+  implementation = _already_generated_rule_impl,
+)
+
+def _undeclared_output_rule_impl(ctx):
+  ctx.actions.write(
+    output = ctx.files.src[0],
+    content = "fail",
+  )
+  return []
+
+undeclared_output_rule = rule(
+  implementation = _undeclared_output_rule_impl,
+  attrs = {
+    "src": attr.label(allow_files = True),
+  },
+)
+
+def _never_generated_rule_impl(ctx):
+  ctx.actions.declare_file("forgotten.txt")
+  return []
+
+never_generated_rule = rule(
+  implementation = _never_generated_rule_impl,
+)

@@ -28,6 +28,8 @@ where
         // are kept.
         module.set_extra_value({
             let mut eval = Evaluator::new(&module);
+            let label = eval.heap().alloc(target.label().to_owned());
+            let actions = eval.heap().alloc(crate::actions::Actions::<C>::new());
             let ctx = eval.heap().alloc(Ctx::<C>::new(
                 rule.schema.create_ctx_fields(
                     target.attrs(),
@@ -38,10 +40,14 @@ where
                     &eval.heap(),
                 )?,
                 rule,
+                label,
+                actions,
             ));
 
             eval.set_context(&rule_context);
-            eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?
+            let res = eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?;
+            rule_context.require_rule_impl()?.rule_impl_complete()?;
+            res
         });
 
         let frozen = module.freeze()?;

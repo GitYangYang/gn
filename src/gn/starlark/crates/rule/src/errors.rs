@@ -18,6 +18,8 @@ pub enum Error {
          structures."
     )]
     ObjectUnfreezable(&'static str),
+    #[error("Declared file name cannot be empty")]
+    EmptyFilename,
 }
 
 impl From<Error> for starlark::Error {
