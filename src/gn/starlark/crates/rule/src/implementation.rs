@@ -38,10 +38,14 @@ where
                     &eval.heap(),
                 )?,
                 rule,
+                eval.heap().alloc(target.label().to_owned()),
+                eval.heap().alloc(crate::actions::Actions::<C>::default()),
             ));
 
             eval.set_context(&rule_context);
-            eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?
+            let res = eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?;
+            rule_context.require_rule_impl()?.rule_impl_complete()?;
+            res
         });
 
         let frozen = module.freeze()?;
