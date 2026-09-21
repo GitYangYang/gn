@@ -13,10 +13,12 @@
 #include "base/files/file_path.h"
 #include "base/json/json_writer.h"
 #include "base/json/string_escape.h"
+#include "gn/build_settings.h"
 #include "gn/builder.h"
 #include "gn/commands.h"
 #include "gn/deps_iterator.h"
 #include "gn/desc_builder.h"
+#include "gn/ffi/bridge.h"
 #include "gn/filesystem_utils.h"
 #include "gn/invoke_python.h"
 #include "gn/resolved_target_data.h"
@@ -358,6 +360,16 @@ StringOutputBuffer JSONProjectWriter::GenerateJSON(
 
     // Other files read by the build.
     std::vector<base::FilePath> other_files = g_scheduler->GetGenDependencies();
+
+    const base::FilePath build_dir_path =
+        build_settings->build_dir().Resolve(build_settings->root_path());
+
+    if (build_settings->has_starlark_session()) {
+      for (const auto& file : build_settings->starlark_session().loaded()) {
+        other_files.push_back(
+            build_dir_path.Append(UTF8ToFilePath(std::string_view(file))));
+      }
+    }
 
     const InputFileManager* input_file_manager =
         g_scheduler->input_file_manager();
