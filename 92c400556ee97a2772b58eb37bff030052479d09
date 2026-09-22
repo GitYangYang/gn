@@ -24,6 +24,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc89313c_9136b9a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-22T05:35:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e738f552_73c8c660",
+      "range": {
+        "startLine": 13,
+        "startChar": 12,
+        "endLine": 13,
+        "endChar": 14
+      },
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df774f88_dbaf0a9b",
@@ -79,6 +103,24 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be169449_ec82a5d2",
+        "filename": "src/gn/build_file_editor.cc",
+        "patchSetId": 4
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-22T05:35:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df774f88_dbaf0a9b",
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6138bec5_d3be90c3",
@@ -120,6 +162,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d165251_e9bf7cd7",
+        "filename": "src/gn/commands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-22T05:35:45Z",
+      "side": 1,
+      "message": "Can\u0027t be null.",
+      "parentUuid": "6138bec5_d3be90c3",
+      "range": {
+        "startLine": 137,
+        "startChar": 16,
+        "endLine": 137,
+        "endChar": 22
+      },
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e26673e9_d7143969",
@@ -133,6 +199,30 @@
       "writtenOn": "2026-09-18T08:08:15Z",
       "side": 1,
       "message": "This is redundant?",
+      "range": {
+        "startLine": 147,
+        "startChar": 40,
+        "endLine": 147,
+        "endChar": 54
+      },
+      "revId": "92c400556ee97a2772b58eb37bff030052479d09",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "176e199d_f5531225",
+        "filename": "src/gn/commands.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-22T05:35:45Z",
+      "side": 1,
+      "message": "Not redundant. `ResolvedTarget{target, scope}` is only valid if conditional has an explicit default.",
+      "parentUuid": "e26673e9_d7143969",
       "range": {
         "startLine": 147,
         "startChar": 40,
