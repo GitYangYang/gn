@@ -58,6 +58,31 @@ impl<'v> StarlarkValue<'v> for TargetRef {
         self.hash(hasher);
         Ok(())
     }
+
+    fn at(&self, index: Value<'v>, _heap: Heap<'v>) -> starlark::Result<Value<'v>> {
+        match self
+            .0
+            .evaluated
+            .get()
+            .expect("shouldn't have access to an unfrozen target")
+            .providers
+            .get(index)
+        {
+            Some(&val) => Ok(val.to_value()),
+            None => starlark::values::ValueError::unsupported_with(self, "[]", index),
+        }
+    }
+
+    fn is_in(&self, other: Value<'v>) -> starlark::Result<bool> {
+        Ok(self
+            .0
+            .evaluated
+            .get()
+            .expect("shouldn't have access to an unfrozen target")
+            .providers
+            .get(other)
+            .is_some())
+    }
 }
 
 impl<'v> AllocValue<'v> for TargetRef {
