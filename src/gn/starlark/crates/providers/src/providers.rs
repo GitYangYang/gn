@@ -10,7 +10,7 @@ use starlark::{
     values::{
         list::FrozenListRef, structs::FrozenStructRef, type_repr::StarlarkTypeRepr,
         typing::TypeInstanceId, FrozenHeapRef, FrozenValue, OwnedFrozenValue, UnpackValue as _,
-        Value,
+        Value, ValueLike as _,
     },
 };
 use types::File;
@@ -45,11 +45,29 @@ pub struct Providers {
     pub substitutions: SmallMap<&'static str, FrozenArgsSequence<'static>>,
 
     /// All provider instances mapped by their ProviderType's TypeInstanceId.
-    pub value: SmallMap<TypeInstanceId, FrozenValue>,
+    value: SmallMap<TypeInstanceId, FrozenValue>,
 
     /// The frozen heap for the rule implementation, keeping substitutions and
     /// value alive.
     _heap: FrozenHeapRef,
+}
+
+impl Providers {
+    /// Looks up a provider instance by provider type value.
+    #[allow(clippy::result_unit_err)]
+    pub fn get(&self, key: Value<'_>) -> Result<Option<&FrozenValue>, ()> {
+        let Some(key) = &key
+            .downcast_ref::<crate::provider_type::FrozenProviderType>()
+            .map(|p| p.id)
+            .or_else(|| {
+                key.downcast_ref::<crate::provider_type::ProviderType>()
+                    .map(|p| p.id)
+            })
+        else {
+            return Err(());
+        };
+        Ok(self.value.get(key))
+    }
 }
 
 impl StarlarkTypeRepr for Providers {
