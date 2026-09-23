@@ -1,0 +1,9 @@
+def _filegroup_impl(ctx):
+  return [DefaultInfo(files = depset(ctx.files.srcs))]
+
+filegroup = rule(
+    implementation = _filegroup_impl,
+    attrs = {
+        "srcs": attr.label_list(allow_files = True),
+    }
+)
