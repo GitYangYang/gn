@@ -5,12 +5,8 @@
 use args::FrozenArgsSequence;
 use depset::UnpackFileDepset;
 use starlark::{
-    collections::SmallMap,
-    typing::Ty,
-    values::{
-        list::FrozenListRef, structs::FrozenStructRef, type_repr::StarlarkTypeRepr,
-        typing::TypeInstanceId, FrozenHeapRef, FrozenValue, OwnedFrozenValue, UnpackValue as _,
-        Value,
+    collections::SmallMap, typing::Ty, values::{
+        FrozenHeapRef, FrozenValue, OwnedFrozenValue, StarlarkValue, UnpackValue as _, Value, ValueLike as _, list::FrozenListRef, structs::FrozenStructRef, type_repr::StarlarkTypeRepr, typing::TypeInstanceId,
     },
 };
 use types::File;
@@ -45,11 +41,50 @@ pub struct Providers {
     pub substitutions: SmallMap<&'static str, FrozenArgsSequence<'static>>,
 
     /// All provider instances mapped by their ProviderType's TypeInstanceId.
-    pub value: SmallMap<TypeInstanceId, FrozenValue>,
+    value: SmallMap<TypeInstanceId, FrozenValue>,
 
     /// The frozen heap for the rule implementation, keeping substitutions and
     /// value alive.
     _heap: FrozenHeapRef,
+}
+
+impl Providers {
+    /// Looks up a provider instance by provider type value.
+    pub fn get<'a>(
+        &self,
+        source: &impl StarlarkValue<'a>,
+        key: Value<'_>,
+    ) -> starlark::Result<Option<&FrozenValue>> {
+        let Some(key) = &key
+            .downcast_ref::<crate::provider_type::FrozenProviderType>()
+            .map(|p| p.id)
+            .or_else(|| {
+                key.downcast_ref::<crate::provider_type::ProviderType>()
+                    .map(|p| p.id)
+            })
+        else {
+            return starlark::values::ValueError::unsupported_with(source, "[]", key);
+        };
+        Ok(self.value.get(key))
+    }
+
+    pub fn contains<'a>(
+        &self,
+        source: &impl StarlarkValue<'a>,
+        key: Value<'_>,
+    ) -> starlark::Result<bool> {
+        let Some(key) = &key
+            .downcast_ref::<crate::provider_type::FrozenProviderType>()
+            .map(|p| p.id)
+            .or_else(|| {
+                key.downcast_ref::<crate::provider_type::ProviderType>()
+                    .map(|p| p.id)
+            })
+        else {
+            return starlark::values::ValueError::unsupported_with(source, "in", key);
+        };
+        Ok(self.value.contains_key(key))
+    }
 }
 
 impl StarlarkTypeRepr for Providers {
