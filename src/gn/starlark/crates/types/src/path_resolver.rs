@@ -11,6 +11,8 @@ use crate::{File, PackageRef};
 pub struct PathResolver {
     /// Absolute path to the root source dir on disk.
     source_root: PathBuf,
+    /// Absolute path to the root build dir on disk.
+    build_root: PathBuf,
     /// Path to the root source dir relative to the root_build_dir.
     /// *Must* end with a trailing slash.
     source_root_rel: String,
@@ -19,10 +21,11 @@ pub struct PathResolver {
 impl PathResolver {
     /// Creates a new `PathResolver` with the given absolute and relative root
     /// paths.
-    pub fn new(source_root: PathBuf, source_root_rel: String) -> Self {
+    pub fn new(source_root: PathBuf, build_root: PathBuf, source_root_rel: String) -> Self {
         assert!(source_root_rel.ends_with('/'));
         Self {
             source_root,
+            build_root,
             source_root_rel,
         }
     }
@@ -32,8 +35,14 @@ impl PathResolver {
     pub fn new_for_testing() -> Self {
         Self::new(
             PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../src/testdata"),
+            PathBuf::new(),
             "../../".to_string(),
         )
+    }
+
+    /// Resolves an output file to its absolute on-disk path.
+    pub fn resolve(&self, file: &File) -> PathBuf {
+        self.build_root.join(file.as_path())
     }
 
     /// Calculates where the file should exist on disk.
