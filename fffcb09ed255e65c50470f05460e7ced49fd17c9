@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc29395e_3622bdc4",
+        "filename": "src/gn/starlark/crates/ffi/src/eval_context.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-24T10:58:52Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: While the eval context itself is single-threaded, nothing prevents `require_rule_impl` from being called multiple times within the same thread, yielding aliasing `\u0026mut` references to the same data (which is Undefined Behavior in Rust).\n\nConsider using a `RefCell` instead of an `UnsafeCell` to enforce exclusive borrows at runtime safely.",
+      "range": {
+        "startLine": 156,
+        "startChar": 0,
+        "endLine": 156,
+        "endChar": 0
+      },
+      "revId": "fffcb09ed255e65c50470f05460e7ced49fd17c9",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
