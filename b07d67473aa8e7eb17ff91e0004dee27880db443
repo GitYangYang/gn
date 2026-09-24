@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "653f6bbc_38a66789",
+        "filename": "integration_tests/starlark/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-24T08:05:04Z",
+      "side": 1,
+      "message": "Can we have another target with some files too?",
+      "fixSuggestions": [
+        {
+          "fixId": "610e3712_62c24e36",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "integration_tests/starlark/BUILD.gn",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "\nfilegroup(\"another_filegroup\") {\n  srcs \u003d [\n    \"file1.txt\",\n    \"file2.txt\",\n  ]\n}\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b07d67473aa8e7eb17ff91e0004dee27880db443",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
