@@ -133,7 +133,8 @@ def RunSteps(api, repository):
     cipd_dir = api.path['start_dir'].join('cipd')
     pkgs = api.cipd.EnsureFile()
     pkgs.add_package('infra/ninja/${platform}', 'version:1.8.2')
-    rust_version = 'git_revisions:1ed2df61a19042f231709eb05d032ae9e2cb2084,7980fa07f3c3633504c617e05b31673b50565957'
+    # Integration would be preferred, but it's unavailable for riscv64 cipd package.
+    rust_version = 'latest'
     pkgs.add_package('fuchsia/third_party/rust/host/${platform}', rust_version)
     if api.platform.is_linux:
       pkgs.add_package('fuchsia/third_party/rust/target/x86_64-unknown-linux-gnu', rust_version)
