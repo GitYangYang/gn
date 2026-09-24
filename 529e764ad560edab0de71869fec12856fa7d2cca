@@ -22,6 +22,30 @@
       },
       "revId": "529e764ad560edab0de71869fec12856fa7d2cca",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66590f48_c53f295f",
+        "filename": "integration_tests/starlark/goldens/build.ninja",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-24T04:11:15Z",
+      "side": 1,
+      "message": "This is what GN actually outputs, so we shouldn\u0027t do that here. If we care enough we could do it in the main branch instead of the GN branch (this code is unrelated to starlark)",
+      "parentUuid": "7cd544f1_a6cf41f4",
+      "range": {
+        "startLine": 14,
+        "startChar": 18,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "529e764ad560edab0de71869fec12856fa7d2cca",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
