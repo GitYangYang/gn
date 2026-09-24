@@ -3,9 +3,7 @@
 // found in the LICENSE file.
 
 use allocative::Allocative;
-use starlark::values::{
-    AllocValue, Heap, ProvidesStaticType, StarlarkValue, Value, ValueLike as _,
-};
+use starlark::values::{AllocValue, Heap, ProvidesStaticType, StarlarkValue, Value};
 use starlark_derive::{starlark_value, NoSerialize};
 use types::{LabelRef, TargetRef as _};
 
@@ -68,7 +66,7 @@ impl<'v> AllocValue<'v> for TargetRef {
 
 impl types::TargetRef for TargetRef {
     type Cxx = crate::bridge::CxxTarget;
-    type Rule = rule::FrozenRule<crate::eval_context::EvalContext>;
+    type Rule = rule::Rule<'static, crate::eval_context::EvalContext>;
     type Session = crate::Session;
 
     fn label(&self) -> LabelRef<'_> {

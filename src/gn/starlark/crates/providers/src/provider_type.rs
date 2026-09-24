@@ -6,6 +6,7 @@ use std::{
     cell::OnceCell,
     fmt,
     fmt::{Debug, Display},
+    sync::atomic::{AtomicU64, Ordering},
 };
 
 use allocative::Allocative;
@@ -15,27 +16,48 @@ use starlark::{
     eval::{Arguments, Evaluator, ParametersSpec, ParametersSpecParam},
     starlark_simple_value,
     values::{
-        typing::TypeInstanceId, Freeze, FreezeResult, Freezer, FrozenValue, FrozenValueTyped,
-        StarlarkValue, Trace, Value,
+        Freeze, FreezeResult, Freezer, FrozenHeapName, HeapEdge, OwnedFrozen, StarlarkValue,
+        StringValue, Value, ValueTyped,
     },
 };
-use starlark_derive::{starlark_value, NoSerialize};
+use starlark_derive::{starlark_value, NoSerialize, Trace};
 
 use crate::{Error, ProviderInstance};
 
-#[derive(Debug, Clone, Trace, Allocative)]
+/// A unique identifier for a provider type within a GN build session.
+#[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, PartialOrd, Ord, Allocative)]
+pub struct ProviderId(pub(crate) u64);
+
+impl ProviderId {
+    /// Generates a new unique `ProviderId`.
+    // ProviderId is a unique ID generator and has no meaningful default instance.
+    #[allow(clippy::new_without_default)]
+    pub fn new() -> Self {
+        // Built-in provider IDs are u8s, so starting at 256 is safe
+        static NEXT_ID: AtomicU64 = AtomicU64::new(256);
+        Self(NEXT_ID.fetch_add(1, Ordering::Relaxed))
+    }
+
+    /// Constant constructor for built-in providers.
+    pub const fn builtin(id: u8) -> Self {
+        Self(id as u64)
+    }
+}
+
+#[derive(Allocative, Clone, Debug, Trace)]
 // Contains all the information we cannot know about a provider type until we
 // actually know the name of it.
 pub(crate) struct ProviderTypeData {
-    pub(crate) name: starlark::values::FrozenStringValue,
-    pub(crate) parameter_spec: ParametersSpec<FrozenValue>,
+    pub(crate) name: OwnedFrozen<StringValue<'static>>,
+    pub(crate) parameter_spec: ParametersSpec<Value<'static>>,
+    pub(crate) custom_defaults: SmallMap<usize, OwnedFrozen<Value<'static>>>,
 }
 
 /// Represents the provider type constructor.
-#[derive(Debug, ProvidesStaticType, NoSerialize, Allocative, Trace)]
+#[derive(Allocative, Clone, Debug, NoSerialize, ProvidesStaticType, Trace)]
 pub struct ProviderType {
     /// The unique type identifier.
-    pub(crate) id: TypeInstanceId,
+    pub(crate) id: ProviderId,
     /// The configured provider fields. This is set when starlark calls
     /// `export_as` when you assign the provider to a variable.
     /// If this is not set, you cannot construct the provider.
@@ -45,19 +67,13 @@ pub struct ProviderType {
     pub(crate) fields: SmallMap<String, usize>,
 }
 
-/// Represents the frozen provider type constructor.
-#[derive(Debug, ProvidesStaticType, NoSerialize, Allocative, Trace)]
-pub struct FrozenProviderType {
-    /// The unique type identifier.
-    pub(crate) id: TypeInstanceId,
-    /// The configured provider fields.
-    pub(crate) data: ProviderTypeData,
-    /// A mapping from field name to index.
-    /// This is akin to python's `__slots__`.
-    pub(crate) fields: SmallMap<String, usize>,
-}
+// Safety: `data` is only written during `export_as` while the defining module
+// is being evaluated on a single thread. Once frozen and shared across threads,
+// it is strictly read-only.
+unsafe impl Send for ProviderType {}
+unsafe impl Sync for ProviderType {}
 
-starlark_simple_value!(FrozenProviderType);
+starlark_simple_value!(ProviderType);
 
 impl Display for ProviderType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -65,30 +81,44 @@ impl Display for ProviderType {
     }
 }
 
-impl Display for FrozenProviderType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "<provider>")
-    }
-}
-
 #[starlark_value(type = "provider")]
 impl<'v> StarlarkValue<'v> for ProviderType {
-    type Canonical = FrozenProviderType;
+    type Canonical = Self;
 
-    // Being unable to invoke non-frozen provider types makes ProviderInstance code
-    // much simpler. It isn't really a problems since you should be making
-    // providers inside rule implementations. We can choose to add this feature
-    // later if we'd like.
     fn invoke(
         &self,
-        _me: Value<'v>,
-        _args: &Arguments<'v, '_>,
-        _eval: &mut Evaluator<'v, '_, '_>,
+        me: Value<'v>,
+        args: &Arguments<'v, '_>,
+        eval: &mut Evaluator<'v, '_, '_>,
     ) -> starlark::Result<Value<'v>> {
-        Err(Error::ProviderNotFrozen.into())
+        if !me.is_frozen() {
+            return Err(Error::ProviderNotFrozen.into());
+        }
+
+        let provider_type = ValueTyped::<Self>::new_err(me).unwrap();
+        let data = self.data.get().expect("Frozen providers must be exported");
+        let parameter_spec = HeapEdge::immortal().rebrand_ref(&data.parameter_spec);
+        parameter_spec.parser(args, eval, |param_parser, eval| {
+            let values: Box<[Option<Value<'v>>]> = (0..self.fields.len())
+                .map(|idx| {
+                    let val: Option<Value<'v>> = param_parser.next_opt()?;
+                    Ok(match val {
+                        Some(v) => Some(v),
+                        None => data
+                            .custom_defaults
+                            .get(&idx)
+                            .map(|default_val| default_val.as_ref().add_to_heap(eval.heap())),
+                    })
+                })
+                .collect::<starlark::Result<_>>()?;
+            Ok(eval.heap().alloc_complex(ProviderInstance {
+                provider_type,
+                values,
+            }))
+        })
     }
 
-    fn export_as(&self, name: &str, eval: &mut Evaluator<'v, '_, '_>) -> starlark::Result<()> {
+    fn export_as(&self, name: &str, _eval: &mut Evaluator<'v, '_, '_>) -> starlark::Result<()> {
         if self.data.get().is_some() {
             return Ok(());
         }
@@ -98,44 +128,18 @@ impl<'v> StarlarkValue<'v> for ProviderType {
         }
 
         self.data.get_or_init(|| ProviderTypeData {
-            name: eval.frozen_heap().alloc_str(name),
+            name: OwnedFrozen::build(FrozenHeapName::user("//providers:name"), |heap| {
+                heap.alloc_str(name)
+            }),
             parameter_spec: ParametersSpec::new_named_only(
                 name,
                 self.fields
                     .keys()
                     .map(|f| (f.as_str(), ParametersSpecParam::Optional)),
             ),
+            custom_defaults: SmallMap::new(),
         });
         Ok(())
-    }
-}
-
-#[starlark_value(type = "provider")]
-impl<'v> StarlarkValue<'v> for FrozenProviderType {
-    type Canonical = Self;
-
-    fn invoke(
-        &self,
-        me: Value<'v>,
-        args: &Arguments<'v, '_>,
-        eval: &mut Evaluator<'v, '_, '_>,
-    ) -> starlark::Result<Value<'v>> {
-        // Safety: `me` is the receiver of type `FrozenProviderType`, which is
-        // guaranteed to be frozen.
-        let provider_type: FrozenValueTyped<'static, Self> =
-            unsafe { FrozenValueTyped::new_unchecked(me.unpack_frozen().unwrap_unchecked()) };
-
-        let data = &self.data;
-        data.parameter_spec
-            .parser(args, eval, |param_parser, eval| {
-                let values: Box<[Option<Value<'v>>]> = (0..self.fields.len())
-                    .map(|_| param_parser.next_opt::<Value<'v>>())
-                    .collect::<starlark::Result<_>>()?;
-                Ok(eval.heap().alloc_complex(ProviderInstance {
-                    provider_type: provider_type.as_ref(),
-                    values,
-                }))
-            })
     }
 }
 
@@ -151,53 +155,71 @@ impl ProviderType {
             }
         }
         Ok(Self {
-            id: TypeInstanceId::r#gen(),
+            id: ProviderId::new(),
             data: OnceCell::new(),
             fields: field_map,
         })
     }
-}
 
-impl FrozenProviderType {
-    /// Creates a new builtin provider type with a custom stable TypeInstanceId.
+    /// Creates a new builtin provider type with a custom stable ProviderId.
     /// Unlike regular providers, these providers may have either Defaulted or
     /// Required parameters.
-    pub fn new(
-        id: TypeInstanceId,
+    pub fn new_builtin(
+        id: ProviderId,
         name: &'static str,
         fields: &[(
             &'static str,
-            starlark::eval::ParametersSpecParam<FrozenValue>,
+            ParametersSpecParam<Option<OwnedFrozen<Value<'static>>>>,
         )],
-        heap: &starlark::values::FrozenHeap,
     ) -> Self {
         let field_map = fields
             .iter()
             .enumerate()
-            .map(|(idx, (name, _))| (name.to_string(), idx))
+            .map(|(idx, (field_name, _))| (field_name.to_string(), idx))
             .collect();
-        let name_frozen = heap.alloc_str(name);
+        let mut custom_defaults = SmallMap::new();
+        let param_specs: Vec<(&'static str, ParametersSpecParam<Value<'static>>)> = fields
+            .iter()
+            .enumerate()
+            .map(|(idx, &(field_name, ref param))| {
+                let spec = match param {
+                    ParametersSpecParam::Required => ParametersSpecParam::Required,
+                    ParametersSpecParam::Optional => ParametersSpecParam::Optional,
+                    ParametersSpecParam::Defaulted(default_val) => {
+                        if let Some(owned) = default_val {
+                            custom_defaults.insert(idx, owned.clone());
+                        }
+                        ParametersSpecParam::Optional
+                    },
+                };
+                (field_name, spec)
+            })
+            .collect();
+        let data = OnceCell::new();
+        data.set(ProviderTypeData {
+            name: OwnedFrozen::build(FrozenHeapName::user("//providers:name"), |heap| {
+                heap.alloc_str(name)
+            }),
+            parameter_spec: ParametersSpec::new_named_only(name, param_specs),
+            custom_defaults,
+        })
+        .expect("newly created OnceCell is empty");
         Self {
             id,
-            data: ProviderTypeData {
-                name: name_frozen,
-                parameter_spec: ParametersSpec::new_named_only(name, fields.to_vec()),
-            },
+            data,
             fields: field_map,
         }
     }
 }
 
-impl Freeze for ProviderType {
-    type Frozen = FrozenProviderType;
+impl<'v> Freeze<'v> for ProviderType {
+    type Frozen<'fv> = Self;
 
-    fn freeze(self, _freezer: &Freezer) -> FreezeResult<Self::Frozen> {
-        let data = self.data.into_inner().ok_or(Error::ProviderNotExported)?;
-        Ok(FrozenProviderType {
-            id: self.id,
-            data,
-            fields: self.fields,
-        })
+    fn freeze<'fv>(self, _freezer: &Freezer<'v, 'fv>) -> FreezeResult<Self::Frozen<'fv>> {
+        if self.data.get().is_none() {
+            return Err(Error::ProviderNotExported.into());
+        }
+        Ok(self)
     }
 }
 
@@ -267,7 +289,7 @@ p = provider(fields=['a'])
     #[test]
     fn test_unexported_provider_fails_to_call() {
         let mut a = new_assert();
-        a.fail_to_freeze(
+        a.fail(
             "x = [provider(fields=['a'])]; x",
             "The result of provider() must be assigned to a variable",
         );

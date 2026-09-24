@@ -5,8 +5,8 @@
 use std::collections::{HashMap, HashSet};
 
 use attr::{Attr, LabelOrFile};
-use rule::FrozenRule;
-use starlark::{environment::FrozenModule, values::FrozenValueTyped};
+use rule::Rule;
+use starlark::environment::FrozenModule;
 use testutils::{Assert, FakeEvalContext, FakeTarget};
 use types::{Label, OutputType, PackageRef, Session};
 
@@ -21,9 +21,13 @@ fn test_pure_rule_inheritance() {
     let pure = assert.load_module("//rules:pure.scl");
 
     let rule = |module: &FrozenModule, name: &str| {
-        let val = module.get(name).unwrap().value().unpack_frozen().unwrap();
-        let typed = FrozenValueTyped::<FrozenRule<FakeEvalContext>>::new(val).unwrap();
-        Some(typed.as_ref())
+        let owned = module.get(name).unwrap();
+        let rule_ref = owned.by_ref(|val| {
+            val.downcast_ref::<Rule<'_, FakeEvalContext>>()
+                .unwrap()
+                .as_static()
+        });
+        Some(rule_ref)
     };
 
     assert.pass(
@@ -64,11 +68,10 @@ child_rule(
 "#,
     );
 
-    let heap = starlark::values::FrozenHeap::new();
     let mut unknown_attrs = HashMap::new();
     unknown_attrs.insert(
         "unknown".to_owned(),
-        starlark::values::Value::new_frozen(heap.alloc("unknown")),
+        starlark::const_frozen_string!("unknown").to_value(),
     );
 
     let context = assert.context();
