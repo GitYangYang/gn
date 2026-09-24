@@ -6,7 +6,7 @@ use allocative::Allocative;
 use strum::{Display, EnumIter, IntoStaticStr};
 
 #[repr(u8)]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, EnumIter, Display, IntoStaticStr, Allocative)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter, Display, IntoStaticStr, Allocative)]
 #[strum(serialize_all = "snake_case")]
 /// Copied from target.h's OutputType enum.
 pub enum OutputType {
@@ -54,8 +54,8 @@ const fn contains(slice: &[&'static str], needle: &'static str) -> bool {
 }
 
 impl OutputType {
-    const MAX: u8 = Self::RustProcMacro as u8;
-    const NOOP: u8 = 15;
+    pub const MAX: u8 = Self::RustProcMacro as u8;
+    pub const NOOP: u8 = 15;
 
     /// Converts a u8 discriminant from GN C++ Target::OutputType to
     /// `Option<OutputType>`.
@@ -97,6 +97,12 @@ impl OutputType {
 
     pub const fn has_public_deps(self) -> bool {
         contains(self.attrs().1, "public_deps")
+    }
+}
+
+impl From<OutputType> for usize {
+    fn from(value: OutputType) -> Self {
+        value as Self
     }
 }
 

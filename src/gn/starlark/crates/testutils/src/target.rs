@@ -29,7 +29,7 @@ pub struct FakeTarget {
     /// A list of attributes.
     pub attrs: Vec<Attr>,
     pub output_type: Option<OutputType>,
-    pub rule: Option<&'static rule::FrozenRule<FakeEvalContext>>,
+    pub rule: &'static rule::FrozenRule<FakeEvalContext>,
     #[allocative(skip)]
     pub cxx_attrs: HashMap<String, Value<'static>>,
     /// Registered target dependencies.
@@ -44,7 +44,7 @@ impl PartialEq for FakeTarget {
             && self.outputs == other.outputs
             && self.attrs == other.attrs
             && self.output_type == other.output_type
-            && self.rule.map(|r| r as *const _) == other.rule.map(|r| r as *const _)
+            && std::ptr::eq(self.rule, other.rule)
             && self.cxx_attrs.len() == other.cxx_attrs.len()
             && self.cxx_attrs.iter().all(|(k, v)| {
                 other
@@ -144,7 +144,7 @@ impl TargetRef for FakeTargetRef {
         self.get().toolchain.as_ref()
     }
 
-    fn rule(&self) -> Option<&'static Self::Rule> {
+    fn rule(&self) -> &'static Self::Rule {
         self.get().rule
     }
 

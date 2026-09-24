@@ -25,7 +25,8 @@ use crate::rule::{build_signature, OutputType};
 #[derive(NoSerialize, Allocative)]
 pub struct FrozenRule<C: EvalContextAttrExt> {
     pub(crate) schema: CtxAttrSchema,
-    pub(crate) builtin: Option<OutputType>,
+    pub(crate) output_type: Option<OutputType>,
+    pub(crate) is_builtin: bool,
     pub(crate) implementation: FrozenValue,
     pub(crate) name: String,
     pub(crate) signature: ParametersSpec<FrozenValue>,
@@ -51,7 +52,7 @@ impl<C: EvalContextAttrExt> fmt::Debug for FrozenRule<C> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("FrozenRule")
             .field("schema", &self.schema)
-            .field("builtin", &self.builtin)
+            .field("output_type", &self.output_type)
             .field("parent", &self.parent)
             .finish()
     }
@@ -65,7 +66,8 @@ impl<C: EvalContextAttrExt> FrozenRule<C> {
         let signature = build_signature(name, &schema, true);
         Self {
             schema,
-            builtin: Some(builtin),
+            output_type: Some(builtin),
+            is_builtin: true,
             implementation: FrozenValue::new_none(),
             name: name.to_owned(),
             signature,
@@ -74,8 +76,8 @@ impl<C: EvalContextAttrExt> FrozenRule<C> {
         }
     }
 
-    pub fn has_implementation(&self) -> bool {
-        !self.implementation.is_none()
+    pub fn is_builtin(&self) -> bool {
+        self.is_builtin
     }
 }
 
@@ -117,7 +119,7 @@ where
                 })
                 .collect::<Result<Vec<_>, _>>()?;
 
-            let mut cxx_target = if let Some(builtin) = self.builtin {
+            let mut cxx_target = if let Some(builtin) = self.output_type {
                 // Collect all the arguments we don't recognise and pass them to the native
                 // implementation.
                 let kwargs: SmallMap<String, Value<'v>> = param_parser.next()?;

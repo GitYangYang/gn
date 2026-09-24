@@ -196,12 +196,8 @@ impl attr::traits::EvalContextAttrExt for EvalContext {
             starlark::values::FrozenValueTyped::<rule::FrozenRule<Self>>::new_err(rule)?;
         Ok(self.session.register_target(crate::target::Target {
             cxx,
-            starlark: typed_rule
-                .has_implementation()
-                .then(|| crate::target::StarlarkTarget {
-                    rule: typed_rule,
-                    attrs,
-                }),
+            rule: typed_rule.as_ref(),
+            attrs,
             evaluated: Default::default(),
         }))
     }

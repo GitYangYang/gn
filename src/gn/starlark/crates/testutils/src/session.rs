@@ -17,6 +17,9 @@ pub struct FakeSession {
     pub targets: RefCell<HashSet<FakeTargetRef>>,
     /// Temporary storage for targets being constructed.
     pub targets_under_construction: RefCell<Vec<Box<FakeTarget>>>,
+    /// The default rule for empty targets.
+    pub default_rule: &'static rule::FrozenRule<crate::FakeEvalContext>,
+    _module: starlark::environment::FrozenModule,
 }
 
 impl Default for FakeSession {
@@ -29,6 +32,8 @@ impl FakeSession {
     /// Creates a new `FakeSession` instance with empty targets and a
     /// preconfigured default toolchain.
     pub fn new() -> Self {
+        let (module, rules) = rule::register_builtin_rules::<crate::FakeEvalContext>();
+        let default_rule = rules[types::OutputType::SourceSet as usize];
         let this = Self {
             default_toolchain: Label::new(
                 PackageRef::root().to_owned(),
@@ -36,6 +41,8 @@ impl FakeSession {
             ),
             targets: RefCell::new(HashSet::new()),
             targets_under_construction: RefCell::new(Vec::new()),
+            default_rule,
+            _module: module,
         };
         this.insert_empty_target(PackageRef::root(), "default");
         this
@@ -67,7 +74,7 @@ impl FakeSession {
             outputs: Default::default(),
             attrs: Default::default(),
             output_type: Default::default(),
-            rule: Default::default(),
+            rule: self.default_rule,
             cxx_attrs: Default::default(),
             dependencies: Default::default(),
         }

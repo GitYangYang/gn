@@ -85,7 +85,7 @@ impl Assert {
             }
             builder.set("attr", attr::AttrModule { make_attr_schema });
         });
-        let builtins = rule::register_builtin_rules::<FakeEvalContext>();
+        let (builtins, _) = rule::register_builtin_rules::<FakeEvalContext>();
         assert.module_add(builtins);
         assert
     }

@@ -5,14 +5,8 @@
 use std::cell::OnceCell;
 
 use providers::Providers;
-use starlark::values::FrozenValueTyped;
 
 use crate::{eval_context::EvalContext, TargetRef};
-
-pub(crate) struct StarlarkTarget {
-    pub(crate) rule: FrozenValueTyped<'static, rule::FrozenRule<EvalContext>>,
-    pub(crate) attrs: Vec<attr::Attr>,
-}
 
 /// The results of running the rule implementation on a target.
 #[derive(Debug)]
@@ -25,7 +19,8 @@ pub struct Target {
     // starlark targets store a reference to C++ targets, and C++ targets store an optional
     // reference to starlark targets.
     pub(crate) cxx: &'static crate::bridge::CxxTarget,
-    pub(crate) starlark: Option<StarlarkTarget>,
+    pub(crate) rule: &'static rule::FrozenRule<EvalContext>,
+    pub(crate) attrs: Vec<attr::Attr>,
     pub(crate) evaluated: OnceCell<EvaluatedTarget>,
 }
 
@@ -37,12 +32,6 @@ impl Target {
         session: &'static crate::Session,
         mut err: std::pin::Pin<&mut crate::bridge::Err>,
     ) -> &'static str {
-        let Some(starlark) = &self.starlark else {
-            return "";
-        };
-        if !starlark.rule.has_implementation() {
-            return "";
-        }
         // Safety: The Err reference is valid and non-null for the duration of the
         // invocation.
         let err_ptr = unsafe { std::ptr::NonNull::new_unchecked(err.as_mut().get_unchecked_mut()) };

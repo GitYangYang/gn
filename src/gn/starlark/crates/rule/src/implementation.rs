@@ -18,31 +18,40 @@ pub fn run<C: EvalContextAttrExt + crate::CtxMethods>(
 where
     <C::Session as Session>::TargetRef: TargetAttrExt<Rule = FrozenRule<C>, Session = C::Session>,
 {
-    // Safety: rule is always a rule for custom rule-built targets.
-    let rule = target.rule().unwrap();
+    let rule = target.rule();
 
     Module::with_temp_heap(|module| {
-        let rule_context = create_context(target);
+        if rule.is_builtin {
+            // The other branch would also work, but as an optimization, we can skip
+            // creating ctx for any pure builtin rules.
+            module.set_extra_value(Evaluator::new(&module).eval_function(
+                rule.implementation.to_value(),
+                &[],
+                &[],
+            )?);
+        } else {
+            let rule_context = create_context(target);
 
-        // When the module is frozen, only things transitively required by extra_value
-        // are kept.
-        module.set_extra_value({
-            let mut eval = Evaluator::new(&module);
-            let ctx = eval.heap().alloc(Ctx::<C>::new(
-                rule.schema.create_ctx_fields(
-                    target.attrs(),
-                    rule_context.session(),
-                    &rule_context.current_toolchain(),
-                    rule.builtin,
-                    target.builtin_attrs(rule_context.session(), &eval.heap()),
-                    &eval.heap(),
-                )?,
-                rule,
-            ));
+            // When the module is frozen, only things transitively required by extra_value
+            // are kept.
+            module.set_extra_value({
+                let mut eval = Evaluator::new(&module);
+                let ctx = eval.heap().alloc(Ctx::<C>::new(
+                    rule.schema.create_ctx_fields(
+                        target.attrs(),
+                        rule_context.session(),
+                        &rule_context.current_toolchain(),
+                        rule.output_type,
+                        target.builtin_attrs(rule_context.session(), &eval.heap()),
+                        &eval.heap(),
+                    )?,
+                    rule,
+                ));
 
-            eval.set_context(&rule_context);
-            eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?
-        });
+                eval.set_context(&rule_context);
+                eval.eval_function(rule.implementation.to_value(), &[ctx], &[])?
+            });
+        }
 
         let frozen = module.freeze()?;
         Ok(frozen.owned_extra_value().unwrap())

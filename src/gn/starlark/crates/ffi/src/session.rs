@@ -24,6 +24,7 @@ pub struct Session {
     pub(crate) path_resolver: PathResolver,
     globals: Globals,
     targets: RwLock<TargetMap>,
+    pub(crate) builtin_rules: Vec<&'static rule::FrozenRule<crate::eval_context::EvalContext>>,
 }
 
 fn make_attr_schema<'v>(
@@ -55,14 +56,15 @@ impl Session {
     /// Creates a new `Session`.
     pub fn from_resolver(path_resolver: PathResolver) -> Self {
         let loader = FileLoader::default();
-        loader.preload(rule::register_builtin_rules::<
-            crate::eval_context::EvalContext,
-        >());
+        let (builtin_module, builtin_rules) =
+            rule::register_builtin_rules::<crate::eval_context::EvalContext>();
+        loader.preload(builtin_module);
         Self {
             loader,
             path_resolver,
             globals: build_globals(),
             targets: Default::default(),
+            builtin_rules,
         }
     }
 
@@ -98,7 +100,7 @@ impl Session {
             // rust_target from a C++ target at the same time.
             Entry::Occupied(e) => {
                 assert!(
-                    target.starlark.is_none(),
+                    target.rule.is_builtin(),
                     "Target already registered, or accessed via to_rust before registration"
                 );
                 // Safety: A target object in the map is never deleted and lives for the
@@ -108,13 +110,22 @@ impl Session {
         })
     }
 
+    pub(crate) fn get_builtin_rule(
+        &self,
+        output_type: u8,
+    ) -> &'static rule::FrozenRule<crate::eval_context::EvalContext> {
+        self.builtin_rules[output_type as usize]
+    }
+
     pub(crate) fn register_cxx_target(
         &self,
         cxx: &'static crate::bridge::CxxTarget,
     ) -> &'static Target {
+        let rule = self.get_builtin_rule(cxx.output_type());
         self.register_target(Target {
             cxx,
-            starlark: None,
+            rule,
+            attrs: Vec::new(),
             evaluated: Default::default(),
         })
         .0

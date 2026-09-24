@@ -23,7 +23,7 @@ fn test_pure_rule_inheritance() {
     let rule = |module: &FrozenModule, name: &str| {
         let val = module.get(name).unwrap().value().unpack_frozen().unwrap();
         let typed = FrozenValueTyped::<FrozenRule<FakeEvalContext>>::new(val).unwrap();
-        Some(typed.as_ref())
+        typed.as_ref()
     };
 
     assert.pass(

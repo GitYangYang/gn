@@ -37,7 +37,8 @@ pub struct Rule<'v, C: EvalContextAttrExt> {
     // Filled after `export_as` is called.
     // Contains the name of the rule, and the signature required to call it.
     once_named: OnceCell<(String, ParametersSpec<FrozenValue>)>,
-    builtin: Option<OutputType>,
+    output_type: Option<OutputType>,
+    builtin: bool,
     implementation: Value<'v>,
     parent: Option<Value<'v>>,
     _phantom: PhantomData<C>,
@@ -126,12 +127,12 @@ impl<'v, C: EvalContextAttrExt> Rule<'v, C> {
             Some(parent_val) => {
                 if let Some(rule) = parent_val.downcast_ref::<FrozenRule<C>>() {
                     if builtin.is_none() {
-                        builtin = rule.builtin;
+                        builtin = rule.output_type;
                     }
                     Some(&rule.schema)
                 } else if let Some(rule) = parent_val.downcast_ref::<Rule<'v, C>>() {
                     if builtin.is_none() {
-                        builtin = rule.builtin;
+                        builtin = rule.output_type;
                     }
                     Some(&rule.schema)
                 } else {
@@ -150,7 +151,8 @@ impl<'v, C: EvalContextAttrExt> Rule<'v, C> {
         Ok(Self {
             schema,
             once_named: Default::default(),
-            builtin,
+            output_type: builtin,
+            builtin: false,
             implementation,
             parent,
             _phantom: PhantomData,
@@ -187,7 +189,7 @@ where
         variable_name: &str,
         _eval: &mut Evaluator<'v, '_, '_>,
     ) -> starlark::Result<()> {
-        let signature = build_signature(variable_name, &self.schema, self.builtin.is_some());
+        let signature = build_signature(variable_name, &self.schema, self.output_type.is_some());
         let _ = self.once_named.set((variable_name.to_owned(), signature));
         Ok(())
     }
@@ -216,7 +218,8 @@ impl<'v, C: EvalContextAttrExt> Freeze for Rule<'v, C> {
             .ok_or(crate::Error::RuleMustBeNamed)?;
         Ok(FrozenRule {
             schema: self.schema,
-            builtin: self.builtin,
+            output_type: self.output_type,
+            is_builtin: self.builtin,
             implementation: self.implementation.freeze(freezer)?,
             name,
             signature,

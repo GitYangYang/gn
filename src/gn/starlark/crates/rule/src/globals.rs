@@ -5,7 +5,7 @@
 use attr::{traits::EvalContextAttrExt, TargetAttrExt};
 use starlark::{
     environment::{FrozenModule, Module},
-    values::FrozenHeapName,
+    values::{FrozenHeapName, ValueLike as _},
 };
 use strum::IntoEnumIterator;
 
@@ -20,15 +20,24 @@ use crate::{FrozenRule, OutputType};
 ///   sources = [...],
 ///   ...
 /// )
-pub fn register_builtin_rules<C: EvalContextAttrExt>() -> FrozenModule
+pub fn register_builtin_rules<C: EvalContextAttrExt>() -> (FrozenModule, Vec<&'static FrozenRule<C>>)
 where
     <C::Session as types::Session>::TargetRef: TargetAttrExt,
 {
-    Module::with_temp_heap(|module| {
+    let mut rules = Vec::new();
+    // Safety: Placeholder at index 0 because OutputType starts from 1.
+    // Never Dereferenced, and validated by assert below.
+    rules.push(unsafe { std::ptr::NonNull::dangling().as_ref() });
+    let module = Module::with_temp_heap(|module| {
         for output_type in OutputType::iter() {
             let name = output_type.to_string();
             let frozen_rule = FrozenRule::<C>::new_builtin(output_type, module.frozen_heap());
             let frozen_value = module.frozen_heap().alloc(frozen_rule);
+            let static_rule = unsafe {
+                types::util::extend_lifetime(frozen_value.downcast_ref::<FrozenRule<C>>().unwrap())
+            };
+            assert!(rules.len() == usize::from(output_type));
+            rules.push(static_rule);
             module.set(&name, frozen_value.to_value());
         }
 
@@ -37,7 +46,8 @@ where
                 "//builtins:rules.scl".to_owned(),
             )))
             .unwrap()
-    })
+    });
+    (module, rules)
 }
 
 /// Registers standard target rules in the session.
