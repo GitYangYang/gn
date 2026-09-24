@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cd544f1_a6cf41f4",
+        "filename": "integration_tests/starlark/goldens/build.ninja",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-24T04:10:00Z",
+      "side": 1,
+      "message": "Can we drop this trailing space?",
+      "range": {
+        "startLine": 14,
+        "startChar": 18,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "529e764ad560edab0de71869fec12856fa7d2cca",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
