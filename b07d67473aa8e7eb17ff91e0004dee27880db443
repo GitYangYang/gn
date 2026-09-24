@@ -34,6 +34,24 @@
       ],
       "revId": "b07d67473aa8e7eb17ff91e0004dee27880db443",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eac40cf_539b7b0b",
+        "filename": "integration_tests/starlark/BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-24T08:05:56Z",
+      "side": 1,
+      "message": "No, because rules don\u0027t yet run, so it won\u0027t work. That\u0027s in the child commit.",
+      "parentUuid": "653f6bbc_38a66789",
+      "revId": "b07d67473aa8e7eb17ff91e0004dee27880db443",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
