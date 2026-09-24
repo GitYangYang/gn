@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae5879c_f539422d",
+        "filename": "src/gn/edit_command_unittest.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-24T03:51:40Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: In C++, class members are destructed in the reverse order of their declaration. Since `build_files_` is declared after `edit_state_`, it will be destroyed *before* `edit_state_`.\n\nIf `edit_state_` holds warnings with `Location` objects that point to `InputFile`s owned by `build_files_`, this theoretically introduces a Use-After-Free condition when `Edited` is destructed (which is exactly what this CL intends to fix).\n\nConsider moving this declaration above `edit_state_` so that `build_files_` outlives it.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 0
+      },
+      "revId": "8cf233e0bce1548716bdc49ff9f885da4aab3dc5",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
