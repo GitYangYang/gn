@@ -22,6 +22,30 @@
       },
       "revId": "616aa3f513e91926cd1a54d6cefc55cb39679463",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32753baf_5847c517",
+        "filename": "src/gn/build_file_editor.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-24T06:07:03Z",
+      "side": 1,
+      "message": "I didn\u0027t do it originally because it was too verbose. I made it slightly less verbose now",
+      "parentUuid": "358d168c_bb71a395",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 0
+      },
+      "revId": "616aa3f513e91926cd1a54d6cefc55cb39679463",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
