@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb9e7c2_e470ff53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000019
+      },
+      "writtenOn": "2026-09-24T05:48:10Z",
+      "side": 1,
+      "message": "Thanks! I need a new +2 (my accounts aren\u0027t linked, so my @chromium account is treated as a non-committer account on gn-review)",
+      "revId": "a7c56e5826ce68e1609739d03618f5e77f455c2d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
