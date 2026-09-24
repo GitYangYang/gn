@@ -16,6 +16,24 @@
       "message": "Fix mac build error?",
       "revId": "990b2927b2c03cc1e26e007d09540182c477058a",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "090bd35e_0e408478",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-24T04:59:30Z",
+      "side": 1,
+      "message": "I\u0027m working on a fix for it, but it\u0027s unrelated to this CL. It\u0027s failing at head. I need to update dependencies to fix it.",
+      "parentUuid": "55cda63a_3111fc95",
+      "revId": "990b2927b2c03cc1e26e007d09540182c477058a",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
