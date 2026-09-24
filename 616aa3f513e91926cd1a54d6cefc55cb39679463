@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "358d168c_bb71a395",
+        "filename": "src/gn/build_file_editor.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-24T04:28:43Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: If `chain.size() \u003e 1`, this will output `if (head)\u0027s else`, dropping the intermediate `else if` conditions (e.g., an `if (A) { ... } else if (B) { ... } else { ... }` will result in `if (A)\u0027s else` instead of something indicating `B` was involved).\n\nConsider using `chain.back()` for the `else` clause when the chain is longer than 1:\n```cpp\nif (chain.size() \u003d\u003d 1) {\n  clauses.push_back(\"if (\" + head + \")\u0027s else\");\n} else {\n  clauses.push_back(\"if (\" + head + \")\u0027s else if (\" +\n                    get_condition_text(chain.back()) + \")\u0027s else\");\n}\n```\nThis would change the output for `generic.cc` in your tests to `if (is_win)\u0027s else if (is_linux)\u0027s else`, which might be a bit more descriptive.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 0
+      },
+      "revId": "616aa3f513e91926cd1a54d6cefc55cb39679463",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
