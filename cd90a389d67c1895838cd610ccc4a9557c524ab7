@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be64e3d_42e5d155",
+        "filename": "src/gn/starlark/crates/types/src/path_resolver.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-25T05:13:03Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Using `PathBuf::new()` here means `resolve()` will return a relative path during tests. Since the docstring for `resolve` states it returns an *absolute* on-disk path, this could cause test failures if consuming code asserts the path is absolute. Furthermore, if tests write to this path, they might write into the current working directory. Consider using a path like `source_root.join(\"out/Default\")` or a temporary directory instead.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 0
+      },
+      "revId": "cd90a389d67c1895838cd610ccc4a9557c524ab7",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3549bf7_70d05189",
+        "filename": "src/gn/starlark/crates/types/src/path_resolver.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-25T05:13:03Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Note that if `file.as_path()` happens to be an absolute path (e.g. starts with `/`), `PathBuf::join` will discard `self.build_root` and return the absolute path directly. Assuming `File` paths are always relative to the build root, this is completely fine, but it\u0027s worth keeping in mind in case Starlark scripts can somehow inject absolute paths into `File` objects.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 0
+      },
+      "revId": "cd90a389d67c1895838cd610ccc4a9557c524ab7",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
