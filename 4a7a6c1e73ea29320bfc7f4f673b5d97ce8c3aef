@@ -16,6 +16,24 @@
       "message": "Can we have assert for this?",
       "revId": "4a7a6c1e73ea29320bfc7f4f673b5d97ce8c3aef",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a703868_c853aa8b",
+        "filename": "src/gn/starlark/crates/types/src/path_resolver.rs",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-25T06:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "228b0f8e_7b77627c",
+      "revId": "4a7a6c1e73ea29320bfc7f4f673b5d97ce8c3aef",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
