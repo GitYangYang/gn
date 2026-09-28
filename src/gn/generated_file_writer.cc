@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "gn.err.h"
+#include "gn/err.h"
 #include "gn/output_conversion.h"
 #include "gn/source_file.h"
 #include "gn/string_output_buffer.h"
