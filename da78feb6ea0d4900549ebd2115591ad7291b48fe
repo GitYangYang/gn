@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd25184e_a0a442b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003352
+      },
+      "writtenOn": "2026-09-28T15:47:18Z",
+      "side": 1,
+      "message": "My committer status in chromium doesn\u0027t apply in this project.",
+      "revId": "da78feb6ea0d4900549ebd2115591ad7291b48fe",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
