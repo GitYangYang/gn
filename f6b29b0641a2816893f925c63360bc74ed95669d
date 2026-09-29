@@ -16,6 +16,24 @@
       "message": "Could we have the context / rule::run track the error as a regular owned object, instead of a raw pointer? And then in this function or wherever the ffi crossover is, move it out into a c++-owned pointer.",
       "revId": "f6b29b0641a2816893f925c63360bc74ed95669d",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd76daa_308293d4",
+        "filename": "src/gn/starlark/crates/ffi/src/target.rs",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-29T00:46:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "655c5f89_84fcffc8",
+      "revId": "f6b29b0641a2816893f925c63360bc74ed95669d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
