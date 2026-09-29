@@ -16,6 +16,24 @@
       "message": "This change is very large, is it difficult to split the CL?",
       "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6336f12_1a0fe502",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-29T22:49:07Z",
+      "side": 1,
+      "message": "Yes, because the starlark version is backwards incompatible. All these changes need to be done in the same commit as the update, otherwise it will fail to compile.",
+      "parentUuid": "2e33a348_b92bfff0",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
