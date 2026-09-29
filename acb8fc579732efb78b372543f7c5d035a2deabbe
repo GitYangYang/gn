@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "072fc7a7_86ee4323",
+        "filename": "src/gn/starlark/crates/ffi/src/target_ref.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-29T05:42:52Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Returning `ValueError::unsupported_with` here will result in an error message indicating that the `[]` operation is not supported on type `TargetRef` (e.g., \"Operation `[]` not supported on type `TargetRef`\"). Since `TargetRef` does support indexing, a missing provider should return a specific error indicating that the provider was not found (e.g. using `starlark::Error::new_value_error` or an appropriate missing key error).",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 0
+      },
+      "revId": "acb8fc579732efb78b372543f7c5d035a2deabbe",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
