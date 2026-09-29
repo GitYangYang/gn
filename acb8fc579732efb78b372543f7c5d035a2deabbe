@@ -22,6 +22,30 @@
       },
       "revId": "acb8fc579732efb78b372543f7c5d035a2deabbe",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfca1aa_92b28d73",
+        "filename": "src/gn/starlark/crates/ffi/src/target_ref.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-09-29T23:51:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "072fc7a7_86ee4323",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 0
+      },
+      "revId": "acb8fc579732efb78b372543f7c5d035a2deabbe",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
