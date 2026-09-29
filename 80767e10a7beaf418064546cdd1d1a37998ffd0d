@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e33a348_b92bfff0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-29T06:41:55Z",
+      "side": 1,
+      "message": "This change is very large, is it difficult to split the CL?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
