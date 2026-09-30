@@ -34,6 +34,193 @@
       "parentUuid": "2e33a348_b92bfff0",
       "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1305bdd5_6635cce6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "This CL also adds a few new unsafe usages (e.g. `Rule::as_static`, the transmute in `Rule::invoke`, and `unsafe impl Send/Sync for ProviderType`), so it might be more accurate to say it removes a net number of unsafe usages.\n\nAlso, FWIW, the current fork doesn\u0027t build with newer nightly rustc (e.g. Chromium\u0027s 1.100 nightly) because allocative\u0027s `impl Allocative for !` conflicts with `Infallible`. It might be worth mentioning that this update also unblocks newer toolchains.",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fd7e6a5_7b9ad27f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "I asked an LLM to take a look this CL and that left 10 comments. Could you address those comments?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb76ebc_09d19371",
+        "filename": "src/gn/starlark/crates/attr/src/ctx.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "Same concern as the static in ProviderId::new(): this is a process-wide global counter. Could this be owned by the session instead?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708432c8_188db5cd",
+        "filename": "src/gn/starlark/crates/ffi/src/bridge.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "Why is this (and `impl Unpin for Target` in target.rs) needed now? I assume `OwnedFrozen` became `!Unpin`; could you add a short comment explaining why it\u0027s fine to implement `Unpin` here?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6b470e4_3d32d37e",
+        "filename": "src/gn/starlark/crates/ffi/src/bridge.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "This sets up a temporary heap on every equality check from C++. Do you know how hot this path is? If `OwnedFrozen` offers a way to compare the underlying values without adding them to a heap (or a pointer-equality fast path), that might be worth using here.",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ddea6cb_9ca2bf6d",
+        "filename": "src/gn/starlark/crates/providers/src/provider_type.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "This (and `NEXT_ID` in attr/src/ctx.rs) is a global static, which goes against the \"No Statics\" rule in .agents/AGENTS.md. Could the ID come from the session / eval context instead? If a global counter is really the simplest option, could you add a comment explaining why it\u0027s OK here?\n\nAlso, the guidelines require sign-off for `#[allow]`. Renaming this to something like `ProviderId::next()` would avoid `clippy::new_without_default` without needing the allow.",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca4835d2_cb84a661",
+        "filename": "src/gn/starlark/crates/providers/src/provider_type.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "Could we use `std::sync::OnceLock` instead of `OnceCell` for `data`? That would make `ProviderType` `Send + Sync` automatically and let us drop these unsafe impls (and the reasoning about when `export_as` can be called) entirely. The extra cost of `OnceLock` should be negligible here.",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e3edda0_a8eba056",
+        "filename": "src/gn/starlark/crates/providers/src/provider_type.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "This creates a new frozen heap for every provider just to store its name (same in new_builtin). Is that intended? Previously this was allocated on `eval.frozen_heap()`. It\u0027s probably not a big deal, but I wanted to check whether there is a cheaper option with the new API.",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc52d9a_89f9a7b0",
+        "filename": "src/gn/starlark/crates/providers/src/providers.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "This closure is quite hard to read: every error path has to return `(Err(..), (outputs_phony, inputs_phony))`, and rustfmt seems to have given up on it (several lines are \u003e 100 columns). How about moving the body into a helper like `fn parse\u003c\u0027v\u003e(val: Value\u003c\u0027v\u003e) -\u003e starlark::Result\u003c(InnerProviders\u003c\u0027v\u003e, Option\u003cFile\u003e, Option\u003cFile\u003e)\u003e` that can use `?`, and keeping the closure as a thin adapter that maps the result into the tuple?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec0feed_34b67552",
+        "filename": "src/gn/starlark/crates/rule/src/rule.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "The safety argument here relies on \"Session stores all .bzl files permanently\", but nothing in this function enforces it (the debug_assert only checks that the rule is named). Could we at least assert that the rule lives on a frozen heap, or make this function `unsafe fn` so that callers have to justify it?\n\nnit: s/permenantly/permanently/",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3b00496_e385a68a",
+        "filename": "src/gn/starlark/crates/rule/src/rule.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-09-30T02:21:22Z",
+      "side": 1,
+      "message": "The comment says `me` is stored in a frozen heap, but we only check `require_macro()` here. `ProviderType::invoke` explicitly checks `me.is_frozen()` before doing something similar; could we do the same here (or at least `debug_assert!(me.is_frozen())`) so the invariant is checked rather than implied?",
+      "revId": "80767e10a7beaf418064546cdd1d1a37998ffd0d",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
