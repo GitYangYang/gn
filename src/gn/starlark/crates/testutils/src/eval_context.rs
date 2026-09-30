@@ -32,8 +32,8 @@ impl Scope for FakeScope {
         let mut values = self.0.clone();
         for (k, v) in kv {
             // Safety: Transmuting 'v to 'static is safe because this mock scope
-            // is only used in tests, where the Starlark heap outlives the evaluation
-            // context.
+            // is only used in tests, where the Starlark heap outlives the
+            // evaluation context.
             let static_val = unsafe { std::mem::transmute::<Value<'v>, Value<'static>>(v) };
             values.insert(k.to_owned(), static_val);
         }
@@ -125,7 +125,8 @@ impl AttrEvalContext for FakeEvalContext {
 
     #[allow(clippy::mut_from_ref)]
     fn require_macro(&self) -> Result<std::pin::Pin<&mut FakeScope>> {
-        // Safety: The Scope pointer is non-null and valid during macro evaluation.
+        // Safety: The Scope pointer is non-null and valid during macro
+        // evaluation.
         Ok(std::pin::Pin::new(unsafe { &mut (*self.scope.get()) }))
     }
 
@@ -161,8 +162,8 @@ impl EvalContextAttrExt for FakeEvalContext {
         };
         let mut targets = self.session.targets_under_construction.borrow_mut();
         targets.push(Box::new(target));
-        // Safety: The Box inside the RefCell's vector is stable in memory and lasts as
-        // long as the FakeSession in tests.
+        // Safety: The Box inside the RefCell's vector is stable in memory and
+        // lasts as long as the FakeSession in tests.
         let target_ref = unsafe { &mut *(&mut **targets.last_mut().unwrap() as *mut FakeTarget) };
         Ok(unsafe { std::pin::Pin::new_unchecked(target_ref) })
     }

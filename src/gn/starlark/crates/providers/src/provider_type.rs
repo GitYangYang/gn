@@ -75,10 +75,10 @@ impl Display for FrozenProviderType {
 impl<'v> StarlarkValue<'v> for ProviderType {
     type Canonical = FrozenProviderType;
 
-    // Being unable to invoke non-frozen provider types makes ProviderInstance code
-    // much simpler. It isn't really a problems since you should be making
-    // providers inside rule implementations. We can choose to add this feature
-    // later if we'd like.
+    // Being unable to invoke non-frozen provider types makes ProviderInstance
+    // code much simpler. It isn't really a problems since you should be
+    // making providers inside rule implementations. We can choose to add
+    // this feature later if we'd like.
     fn invoke(
         &self,
         _me: Value<'v>,

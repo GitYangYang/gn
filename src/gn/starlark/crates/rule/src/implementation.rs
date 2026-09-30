@@ -24,8 +24,8 @@ where
     Module::with_temp_heap(|module| {
         let rule_context = create_context(target);
 
-        // When the module is frozen, only things transitively required by extra_value
-        // are kept.
+        // When the module is frozen, only things transitively required by
+        // extra_value are kept.
         module.set_extra_value({
             let mut eval = Evaluator::new(&module);
             let ctx = eval.heap().alloc(Ctx::<C>::new(

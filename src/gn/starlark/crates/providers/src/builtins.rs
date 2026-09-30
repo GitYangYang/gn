@@ -112,8 +112,8 @@ pub(crate) fn register_builtin_providers(builder: &mut GlobalsBuilder) -> Builti
     });
 
     let default_defaultinfo = default_defaultinfo.unwrap();
-    // DefaultInfo is allocated in the module's heap, so we ensure that the module's
-    // heap will never disappear while the builder is active.
+    // DefaultInfo is allocated in the module's heap, so we ensure that the
+    // module's heap will never disappear while the builder is active.
     builder.frozen_heap().add_reference(module.frozen_heap());
 
     BuiltinProviders {

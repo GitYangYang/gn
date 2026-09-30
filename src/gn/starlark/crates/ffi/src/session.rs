@@ -88,8 +88,8 @@ impl Session {
         crate::TargetRef(match targets.entry((label, toolchain)) {
             Entry::Vacant(e) => {
                 let pinned = Box::pin(target);
-                // Safety: A target object in the map is never deleted and lives for the
-                // session.
+                // Safety: A target object in the map is never deleted and lives
+                // for the session.
                 let static_ref: &'static Target = unsafe { extend_lifetime(&*pinned) };
                 e.insert(pinned);
                 static_ref.cxx.set_rust_target(static_ref);
@@ -102,8 +102,8 @@ impl Session {
                     target.starlark.is_none(),
                     "Target already registered, or accessed via to_rust before registration"
                 );
-                // Safety: A target object in the map is never deleted and lives for the
-                // session.
+                // Safety: A target object in the map is never deleted and lives
+                // for the session.
                 unsafe { extend_lifetime(&**e.get()) }
             },
         })
@@ -124,8 +124,8 @@ impl Session {
     pub(crate) fn load(&'static self, label: LabelRef<'_>) -> starlark::Result<FrozenModule> {
         self.loader
             .load(label, &self.path_resolver, &self.globals, &|pkg| {
-                // Safety: The package reference is guaranteed to live as long as the
-                // eval context.
+                // Safety: The package reference is guaranteed to live as long
+                // as the eval context.
                 crate::eval_context::EvalContext::new_bzl_file(self, unsafe {
                     extend_lifetime(pkg)
                 })

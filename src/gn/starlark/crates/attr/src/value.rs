@@ -322,8 +322,8 @@ mod tests {
                 Vec::<&File>::new()
             );
 
-            // Target has outputs -> they should be collected to files even when allow_files
-            // is None.
+            // Target has outputs -> they should be collected to files even when
+            // allow_files is None.
             let AttrValue { files, file, .. } = Attr::Label(Some(crate::LabelOrFile::Label(
                 target_outputs.label().to_owned(),
             )))
@@ -395,8 +395,8 @@ mod tests {
             assert_eq!(<&File>::unpack_value_err(attr_list[2]).unwrap(), &overlap);
 
             assert!(file.is_none());
-            // Verifying files resolved correctly: target outputs + the direct file (with
-            // overlap deduplicated!)
+            // Verifying files resolved correctly: target outputs + the direct
+            // file (with overlap deduplicated!)
             assert_eq!(
                 UnpackList::<&File>::unpack_value_err(files.unwrap())
                     .unwrap()
@@ -605,8 +605,8 @@ mod tests {
         Module::with_temp_heap(|module| {
             let heap = module.heap();
 
-            // Target outputs foo.cc and foo.h -> succeeds (at least one matches) and both
-            // files are collected
+            // Target outputs foo.cc and foo.h -> succeeds (at least one
+            // matches) and both files are collected
             let AttrValue { files, .. } = Attr::Label(Some(crate::LabelOrFile::Label(
                 target_matching.label().to_owned(),
             )))

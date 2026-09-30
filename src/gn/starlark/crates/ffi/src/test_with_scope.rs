@@ -24,8 +24,8 @@ impl TestWithScope {
     /// Accesses the scope owned by the test fixture as a pinned mutable
     /// reference.
     pub fn scope(&mut self) -> std::pin::Pin<&mut crate::Scope> {
-        // Safety: Scope pointer from TestWithScope is always valid, non-null, and
-        // pinned for the fixture lifetime.
+        // Safety: Scope pointer from TestWithScope is always valid, non-null,
+        // and pinned for the fixture lifetime.
         unsafe { std::pin::Pin::new_unchecked(self.inner.pin_mut().scope_cxx().as_mut().unwrap()) }
     }
 }

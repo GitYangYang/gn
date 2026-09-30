@@ -43,7 +43,8 @@ impl Target {
         if !starlark.rule.has_implementation() {
             return "";
         }
-        // Safety: Targets in GN are pinned in the session and outlive rule execution.
+        // Safety: Targets in GN are pinned in the session and outlive rule
+        // execution.
         let static_self: &'static Self = unsafe { types::util::extend_lifetime(self) };
         let target_ref = TargetRef(static_self);
         let res = rule::run(&target_ref, |t| {
@@ -104,7 +105,8 @@ impl crate::bridge::CxxTarget {
 
     /// Returns the settings for the target.
     pub fn settings(&self) -> &crate::Settings {
-        // Safety: Settings pointer is always valid and non-null on constructed Targets.
+        // Safety: Settings pointer is always valid and non-null on constructed
+        // Targets.
         unsafe { self.settings_cxx().as_ref() }.unwrap()
     }
 

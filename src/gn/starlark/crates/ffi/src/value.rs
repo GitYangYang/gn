@@ -31,16 +31,16 @@ impl Value {
             },
             ValueType::Scope => {
                 let scope_ptr = self.scope_value();
-                // Safety: C++ Value invariants guarantee that scope_value() is never null
-                // when the type is SCOPE.
+                // Safety: C++ Value invariants guarantee that scope_value() is
+                // never null when the type is SCOPE.
                 let scope = unsafe { &*scope_ptr };
                 heap.alloc(starlark::values::structs::AllocStruct(scope.get_kv(heap)))
             },
             ValueType::StarlarkValue => {
                 let rust_val = self.starlark_value();
                 heap.add_reference(rust_val.0.owner());
-                // Safety: This is safe when combined with the above line, which ensures it will
-                // not get GC'd.
+                // Safety: This is safe when combined with the above line, which
+                // ensures it will not get GC'd.
                 starlark::values::Value::new_frozen(unsafe { rust_val.0.unchecked_frozen_value() })
             },
             _ => unreachable!(),

@@ -83,8 +83,9 @@ pub fn depset_constructor<'v, C: types::EvalContext>(
             // Just reuse the child depset object.
             Ok(transitive_vec[0])
         } else {
-            // We cannot reuse the child because the wrapper specifies a different order,
-            // so we create a new equivalent depset wrapping it.
+            // We cannot reuse the child because the wrapper specifies a
+            // different order, so we create a new equivalent depset
+            // wrapping it.
             Ok(heap.alloc(Depset {
                 order,
                 direct: child_depset.direct.clone(),
@@ -96,24 +97,28 @@ pub fn depset_constructor<'v, C: types::EvalContext>(
     } else {
         let phony = if kind == Kind::File {
             if direct_vec.len() == 1 && transitive_vec.is_empty() {
-                // If the depset contains only a single element, its phony is actually just the
-                // real object. We don't need to do this for transitive, because
-                // we optimize a depset with 1 transitive and no direct to not even create a
-                // depset object.
+                // If the depset contains only a single element, its phony is
+                // actually just the real object. We don't need
+                // to do this for transitive, because
+                // we optimize a depset with 1 transitive and no direct to not
+                // even create a depset object.
                 direct_vec[0].downcast_ref::<File>().cloned()
             } else if !direct_vec.is_empty() || !transitive_vec.is_empty() {
                 let mut deps = vec![];
                 for v in &direct_vec {
-                    // Safety: `v` is guaranteed to be a `File` because we validated all direct
-                    // elements when setting the depset kind to `Kind::File`.
+                    // Safety: `v` is guaranteed to be a `File` because we
+                    // validated all direct elements when
+                    // setting the depset kind to `Kind::File`.
                     deps.push(v.downcast_ref::<File>().unwrap().clone());
                 }
                 for v in &transitive_vec {
                     // Safety:
-                    // 1. `v` is guaranteed to be a `Depset` because we successfully unpacked it and
-                    //    validated its kind during transition loop validation.
-                    // 2. The child depset is guaranteed to have a `phony` File because it is a
-                    //    non-empty `Kind::File` depset, which always has a phony file.
+                    // 1. `v` is guaranteed to be a `Depset` because we
+                    //    successfully unpacked it and validated its kind during
+                    //    transition loop validation.
+                    // 2. The child depset is guaranteed to have a `phony` File
+                    //    because it is a non-empty `Kind::File` depset, which
+                    //    always has a phony file.
                     let child_dep = UnpackDepset::unpack_value(*v).unwrap().unwrap();
                     deps.push(child_dep.phony().as_ref().unwrap().clone());
                 }

@@ -54,8 +54,8 @@ macro_rules! register_rule_globals {
                 >,
                 eval: &mut starlark::eval::Evaluator<'v, '_, '_>,
             ) -> starlark::Result<starlark::values::Value<'v>> {
-                // Rules can only be created while loading scl files, not in macros or rule
-                // implementations.
+                // Rules can only be created while loading scl files, not in macros
+                // or rule implementations.
                 use types::{EvalContext, EvaluatorContextExt};
                 eval.context::<$ctx_type>().require_bzl()?;
 

@@ -184,8 +184,8 @@ mod tests {
         a.modify_globals(|builder| {
             depset::depset_globals!(builder, testutils::eval_context::FakeEvalContext);
             let builtin_providers = crate::globals::register_providers(builder);
-            // Note: In production code, the module would be preloaded instead of loading
-            // into globals.
+            // Note: In production code, the module would be preloaded instead
+            // of loading into globals.
             builder.set(
                 "GnInputsInfo",
                 builtin_providers.module.get("GnInputsInfo").unwrap(),

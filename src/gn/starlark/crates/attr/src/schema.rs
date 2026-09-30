@@ -165,11 +165,12 @@ impl AttrSchema {
                 AttrKind::Label => Attr::Label(None),
             }),
             (false, Some(v)) => {
-                // We provide an empty param name because you can write the following code:
+                // We provide an empty param name because you can write the
+                // following code:
                 // p = attr.string(default = 1)
                 // rule(..., attrs = {"foo": p})
-                // This means that at the time you call attr.string, no parameter name has
-                // been set.
+                // This means that at the time you call attr.string, no
+                // parameter name has been set.
                 Some(Attr::create_without_defaults(
                     &schema,
                     v,

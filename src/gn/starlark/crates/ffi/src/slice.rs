@@ -43,7 +43,8 @@ impl<T: OpaqueSized> Slice<T> {
         (0..self.raw.len).map(move |_| {
             let ptr = current;
             current = unsafe { current.add(size) };
-            // Safety: The pointer is valid and exclusive for the lifetime of the iteration.
+            // Safety: The pointer is valid and exclusive for the lifetime of
+            // the iteration.
             unsafe { Pin::new_unchecked(&mut *ptr.cast::<T>()) }
         })
     }
@@ -69,9 +70,9 @@ impl<T: NonOpaque> Slice<T> {
         if self.raw.len == 0 {
             &mut []
         } else {
-            // Safety: T implements NonOpaque, thus guaranteeing its size is correct.
-            // (If T is opaque, rust is lied to and thinks a T is a u8, but &T remains
-            // correct).
+            // Safety: T implements NonOpaque, thus guaranteeing its size is
+            // correct. (If T is opaque, rust is lied to and thinks
+            // a T is a u8, but &T remains correct).
             unsafe { std::slice::from_raw_parts_mut(self.raw.ptr.cast::<T>(), self.raw.len) }
         }
     }
@@ -82,8 +83,9 @@ impl<T: NonOpaque> Slice<T> {
         if self.raw.len == 0 {
             &[]
         } else {
-            // Safety: T implements NonOpaque, thus guaranteeing its size is correct,
-            // and the memory is valid for read access for the lifetime of Slice.
+            // Safety: T implements NonOpaque, thus guaranteeing its size is
+            // correct, and the memory is valid for read access for
+            // the lifetime of Slice.
             unsafe { std::slice::from_raw_parts(self.raw.ptr.cast::<T>(), self.raw.len) }
         }
     }
@@ -125,8 +127,8 @@ impl<T> DerefMut for OwnedSlice<T> {
 impl<T> Drop for OwnedSlice<T> {
     #[inline(always)]
     fn drop(&mut self) {
-        // Safety: Calling ffi_free_vector_buffer is safe. The pointer is guaranteed
-        // to be valid and owned by us.
+        // Safety: Calling ffi_free_vector_buffer is safe. The pointer is
+        // guaranteed to be valid and owned by us.
         unsafe {
             crate::bridge::free_vector_buffer(self.slice.raw.ptr);
         }

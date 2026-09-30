@@ -86,8 +86,8 @@ impl types::Scope for Scope {
 
     fn get<'v>(&self, key: &str, heap: &Heap<'v>) -> Option<StarlarkValue<'v>> {
         let val_ptr = crate::bridge::GetValue(self, key);
-        // Safety: val_ptr is either null or a valid pointer backed by the parent scope
-        // lifetime.
+        // Safety: val_ptr is either null or a valid pointer backed by the
+        // parent scope lifetime.
         unsafe { val_ptr.as_ref() }.map(|val| val.to_rust(heap))
     }
 }

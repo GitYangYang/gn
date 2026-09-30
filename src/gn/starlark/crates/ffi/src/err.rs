@@ -45,7 +45,8 @@ impl CxxErr {
 
         // The "diagnostic" contains the location.
         // Since the GN error type already deals with the location, instead of
-        // having the diagnostic in the error message, we just pass the metadata to gn.
+        // having the diagnostic in the error message, we just pass the metadata
+        // to gn.
         let message = err.without_diagnostic().to_string();
 
         // This is the root cause of the error.
@@ -92,13 +93,14 @@ impl CxxErr {
                 let frame_source = loc.file.source();
                 let frame_resolved = loc.file.resolve_span(loc.span);
 
-                // Note: This is not de-duplicated. If you have a 10-deep stack trace in the
-                // same file, you will have the same InputFile duplicated 10 times in
-                // InputFileManager. We don't really care though, especially because starlark
-                // bans recursion.
+                // Note: This is not de-duplicated. If you have a 10-deep stack
+                // trace in the same file, you will have the
+                // same InputFile duplicated 10 times in
+                // InputFileManager. We don't really care though, especially
+                // because starlark bans recursion.
                 let frame_file_ref = crate::bridge::NewInputFile(frame_filename, frame_source);
-                // Regular GN writes "whence it was called". In starlark, you can do things
-                // like: ```
+                // Regular GN writes "whence it was called". In starlark, you
+                // can do things like: ```
                 // def foo():
                 //   ...
                 // bar = foo

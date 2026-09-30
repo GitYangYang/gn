@@ -275,8 +275,8 @@ mod tests {
             "conflicting orders: depset has order preorder, but transitive child has order postorder",
         );
 
-        // When outer depset specifies non-default order, we can't reuse the inner
-        // depset.
+        // When outer depset specifies non-default order, we can't reuse the
+        // inner depset.
         a.equivalent(
             "depset(transitive=[depset(['c'], transitive=[depset(['a'])])], order='preorder').to_list()",
             "['c', 'a']",
@@ -356,7 +356,8 @@ mod tests {
         let mut a = new_assert();
 
         // This is to ensure we don't accidentally use File::new.
-        // We cannot mix File::new and File::from_rust to get the same file object.
+        // We cannot mix File::new and File::from_rust to get the same file
+        // object.
         let f = |s: &str| File::intern(s);
 
         let mut upto_phony = 0;
@@ -374,7 +375,8 @@ mod tests {
         a.eq("depset()", UnpackFileDepset(None));
         assert_eq!(new_phonies(&a), &[]);
 
-        // Because the outer depset only phonies to one item, we shouldn't make a phony.
+        // Because the outer depset only phonies to one item, we shouldn't make
+        // a phony.
         a.eq(
             "depset([make_file('a.txt')])",
             UnpackFileDepset(Some(f("a.txt"))),
@@ -382,8 +384,8 @@ mod tests {
         assert_eq!(new_phonies(&a), &[]);
 
         // We should make a phony here for the inner depset.
-        // Because the outer depset only phonies to one phony, it shouldn't make a
-        // phony.
+        // Because the outer depset only phonies to one phony, it shouldn't make
+        // a phony.
         a.eq(
             "depset(transitive = [depset([make_file('a.txt'), make_file('b.txt')])])",
             UnpackFileDepset(Some(f("phony/:default_0"))),

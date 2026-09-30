@@ -199,9 +199,9 @@ where
         eval: &mut Evaluator<'v, '_, '_>,
     ) -> starlark::Result<Value<'v>> {
         eval.context::<C>().require_macro()?;
-        // Rules can only be created in bzl files, so if we are in a macro, the rule
-        // must already be frozen. In that case, we would be calling
-        // FrozenRule::invoke instead.
+        // Rules can only be created in bzl files, so if we are in a macro, the
+        // rule must already be frozen. In that case, we would be
+        // calling FrozenRule::invoke instead.
         unreachable!();
     }
 }

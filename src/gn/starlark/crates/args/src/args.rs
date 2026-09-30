@@ -308,7 +308,8 @@ pub fn args_methods(builder: &mut MethodsBuilder) {
         #[starlark(require = named, default = false)] uniquify: bool,
         #[starlark(require = named)] allow_closure: Option<bool>,
     ) -> starlark::Result<Value<'v>> {
-        // See a comment on the error message for more details on why this is needed.
+        // See a comment on the error message for more details on why this is
+        // needed.
         if map_each.is_some() && allow_closure.is_none() {
             return Err(Error::MapEachRequiresAllowClosure.into());
         }
@@ -343,7 +344,8 @@ pub fn args_methods(builder: &mut MethodsBuilder) {
         #[starlark(require = named, default = false)] uniquify: bool,
         #[starlark(require = named)] allow_closure: Option<bool>,
     ) -> starlark::Result<Value<'v>> {
-        // See a comment on the error message for more details on why this is needed.
+        // See a comment on the error message for more details on why this is
+        // needed.
         if map_each.is_some() && allow_closure.is_none() {
             return Err(Error::MapEachRequiresAllowClosure.into());
         }

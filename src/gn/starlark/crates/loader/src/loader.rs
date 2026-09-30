@@ -301,7 +301,8 @@ mod tests {
                 .unpack_str(),
             Some("relative")
         );
-        // Any symbol imported via load should be inaccessible to transitive users.
+        // Any symbol imported via load should be inaccessible to transitive
+        // users.
         assert!(module.get("absolute").is_err());
     }
 

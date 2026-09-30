@@ -52,11 +52,11 @@ impl EvalContext {
         origin: crate::bridge::ParseNodePtr,
         err: NonNull<crate::bridge::Err>,
     ) -> Self {
-        // Safety: The Scope pointer is valid and non-null for the duration of macro
-        // evaluation.
+        // Safety: The Scope pointer is valid and non-null for the duration of
+        // macro evaluation.
         let scope_ref = unsafe { scope.as_ref() };
-        // Safety: Package paths in GN scopes are interned and valid for the build
-        // session.
+        // Safety: Package paths in GN scopes are interned and valid for the
+        // build session.
         let package: &'static types::PackageRef =
             unsafe { types::util::extend_lifetime(scope_ref.package()) };
 
@@ -98,8 +98,8 @@ impl types::EvalContext for EvalContext {
     fn current_toolchain(&self) -> LabelRef<'_> {
         match &self.kind {
             EvalContextKind::Macro { scope, .. } => {
-                // Safety: The eval context is single-threaded, so we cannot have multiple
-                // references at the same time.
+                // Safety: The eval context is single-threaded, so we cannot
+                // have multiple references at the same time.
                 unsafe { scope.as_ref() }.settings().toolchain()
             },
             EvalContextKind::BzlFile => {
@@ -112,13 +112,14 @@ impl types::EvalContext for EvalContext {
         }
     }
 
-    // EvalContext uses interior mutability to provide access to the mutable scope.
+    // EvalContext uses interior mutability to provide access to the mutable
+    // scope.
     #[allow(clippy::mut_from_ref)]
     fn require_macro(&self) -> starlark::Result<std::pin::Pin<&mut Self::Scope>> {
         match &self.kind {
             EvalContextKind::Macro { mut scope, .. } => {
-                // Safety: The eval context is single-threaded, so we cannot have multiple
-                // references at the same time.
+                // Safety: The eval context is single-threaded, so we cannot
+                // have multiple references at the same time.
                 Ok(unsafe { std::pin::Pin::new_unchecked(scope.as_mut()) })
             },
             _ => Err(Error::RequiresMacro.into()),
@@ -163,8 +164,8 @@ impl attr::traits::EvalContextAttrExt for EvalContext {
         unsafe { err_ptr.as_ref() }.into_result()?;
         let mut target_non_null =
             NonNull::new(target_ptr).expect("Target pointer is null but no error was set");
-        // Safety: Target created in GN Scope item collector is heap-allocated, pinned,
-        // and lives for session.
+        // Safety: Target created in GN Scope item collector is heap-allocated,
+        // pinned, and lives for session.
         Ok(unsafe { std::pin::Pin::new_unchecked(target_non_null.as_mut()) })
     }
 

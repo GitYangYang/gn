@@ -195,9 +195,9 @@ fn file_methods(methods: &mut MethodsBuilder) {
 
 #[allow(dead_code)]
 fn dummy_to_force_cxx_linking() {
-    // The C++ code depends on the cxx crate being linked for the rust::Str type.
-    // Because the rust code doesn't depend on the cxx crate, we need a dummy
-    // function that uses some part of cxx to ensure it links.
+    // The C++ code depends on the cxx crate being linked for the rust::Str
+    // type. Because the rust code doesn't depend on the cxx crate, we need
+    // a dummy function that uses some part of cxx to ensure it links.
     drop(cxx::UniquePtr::<cxx::CxxString>::null());
 }
 
@@ -211,8 +211,8 @@ mod tests {
         let f2 = File::intern("foo/bar.txt");
 
         assert_eq!(f1.as_str(), "foo/bar.txt");
-        // Verify pointer equality (they point to the exact same static string backing
-        // memory)
+        // Verify pointer equality (they point to the exact same static string
+        // backing memory)
         assert!(std::ptr::eq(f1.as_str(), f2.as_str()));
     }
 

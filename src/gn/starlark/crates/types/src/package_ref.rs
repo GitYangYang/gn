@@ -34,8 +34,8 @@ impl PackageRef {
     /// starting with "//".
     pub unsafe fn new_unchecked(s: &str) -> &Self {
         debug_assert!(s.starts_with("//"), "Package name must start with //");
-        // Safety: PackageRef is #[repr(transparent)] wrapping str, so their memory
-        // layouts are identical.
+        // Safety: PackageRef is #[repr(transparent)] wrapping str, so their
+        // memory layouts are identical.
         unsafe { &*(std::ptr::from_ref(s) as *const Self) }
     }
 

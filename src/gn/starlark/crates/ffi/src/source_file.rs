@@ -8,8 +8,8 @@ impl SourceFile {
     /// Converts a GN SourceFile to a starlark File relative to the build
     /// directory.
     pub fn to_rust(&self, settings: &crate::Settings) -> types::File {
-        // Safety: source_file_to_output_path returns a string backed by an interned
-        // StringAtom and is static.
+        // Safety: source_file_to_output_path returns a string backed by an
+        // interned StringAtom and is static.
         types::File::new(unsafe {
             types::util::extend_lifetime(crate::bridge::source_file_to_output_path(settings, self))
         })

@@ -45,11 +45,11 @@ impl OwnedFrozenValue {
         // Safety: `self` (and thus self.0.owner()) is guaranteed to outlive
         // the temp module and thus this cannot be GC'd during this call.
         let func_val = unsafe { self.0.unchecked_frozen_value() };
-        // Safety: The Scope reference is valid and non-null for the duration of the
-        // invocation.
+        // Safety: The Scope reference is valid and non-null for the duration of
+        // the invocation.
         let scope_ptr = unsafe { std::ptr::NonNull::new_unchecked(scope.get_unchecked_mut()) };
-        // Safety: The Err reference is valid and non-null for the duration of the
-        // invocation.
+        // Safety: The Err reference is valid and non-null for the duration of
+        // the invocation.
         let mut err_ptr = unsafe { std::ptr::NonNull::new_unchecked(err.get_unchecked_mut()) };
         // Safety: The Scope pointer is valid and non-null.
         let settings = unsafe { scope_ptr.as_ref() }.settings();
@@ -70,7 +70,8 @@ impl OwnedFrozenValue {
                         .downcast_ref::<rule::FrozenRule<crate::eval_context::EvalContext>>()
                         .is_some()
                     {
-                        // Rules require the parameter name, but GN uses rule(name, **kwargs).
+                        // Rules require the parameter name, but GN uses
+                        // rule(name, **kwargs).
                         if let [name] = args.as_slice() {
                             kwargs.push(("name", *name));
                             args.clear();
@@ -143,8 +144,8 @@ mod dummy {
         StarlarkValue = 6,
     }
     unsafe extern "C++" {
-        // include! simply tells cxxbridge to put the #include in the generated C++
-        // source code. It does not do anything on the rust side.
+        // include! simply tells cxxbridge to put the #include in the generated
+        // C++ source code. It does not do anything on the rust side.
         include!("gn/err.h");
         include!("gn/ffi/err.h");
         include!("gn/ffi/scope.h");
@@ -251,10 +252,10 @@ mod dummy {
         fn is_default(self: &Settings) -> bool;
 
         type Scope;
-        // Constructs a new child Scope, populates placeholder Values for the given
-        // keys, and returns an owned slice of references to the placeholders.
-        // For example, NewScope(&scope, ["foo", "bar"]) would return
-        // [scope["foo"], scope["bar"]].
+        // Constructs a new child Scope, populates placeholder Values for the
+        // given keys, and returns an owned slice of references to the
+        // placeholders. For example, NewScope(&scope, ["foo", "bar"])
+        // would return [scope["foo"], scope["bar"]].
         // The caller is then responsible for filling in the values as needed.
         fn NewScope(
             parent_scope: Pin<&mut Scope>,
@@ -266,7 +267,8 @@ mod dummy {
             keys: &[&str],
             out_scope: &mut UniquePtr<Scope>,
         ) -> SliceAny;
-        // Returns an OwnedSlice<KeyValue> corresponding to references to each element.
+        // Returns an OwnedSlice<KeyValue> corresponding to references to each
+        // element.
         fn GetScopeItems(scope: &Scope) -> SliceAny;
         fn GetValue(scope: &Scope, ident: &str) -> *const Value;
         fn SetValue<'a>(
@@ -306,8 +308,8 @@ mod dummy {
         fn SetValueBool(val: Pin<&mut Value>, origin: ParseNodePtr, b: bool);
         fn SetValueInt(val: Pin<&mut Value>, origin: ParseNodePtr, i: i64);
         fn SetValueString(val: Pin<&mut Value>, origin: ParseNodePtr, s: &str);
-        // Initialises self as a list of `size` elements and returns a pointer to the
-        // start.
+        // Initialises self as a list of `size` elements and returns a pointer
+        // to the start.
         fn SetValueList(val: Pin<&mut Value>, origin: ParseNodePtr, size: usize) -> *mut Any;
         fn SetValueScope(val: Pin<&mut Value>, origin: ParseNodePtr, scope: UniquePtr<Scope>);
         fn SetValueStarlark(

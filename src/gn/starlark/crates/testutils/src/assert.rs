@@ -34,20 +34,22 @@ impl Assert {
     /// Creates a new `Assert` helper instance with the given context.
     pub fn new(context: FakeEvalContext) -> Self {
         let mut assert = starlark::assert::Assert::new();
-        // By default, starlark runs the code 3 times (with always GC, auto GC, and
-        // disabled GC) to check for GC bugs. Because the EvalContext can be
-        // mutated by the evaluator, running 3 times could cause state mutations
-        // to happen three times, messing with tests. Calling `always_gc()`
-        // forces the framework to run the code only once (specifically,
-        // under the "always GC" configuration), ensuring state is mutated only once.
+        // By default, starlark runs the code 3 times (with always GC, auto GC,
+        // and disabled GC) to check for GC bugs. Because the
+        // EvalContext can be mutated by the evaluator, running 3 times
+        // could cause state mutations to happen three times, messing
+        // with tests. Calling `always_gc()` forces the framework to run
+        // the code only once (specifically, under the "always GC"
+        // configuration), ensuring state is mutated only once.
         assert.always_gc();
         let context = Box::new(context);
         let context_ptr = &*context as *const FakeEvalContext;
 
         assert.setup_eval(move |eval| {
-            // Safety: The context is owned by Assert, which outlives the evaluator run.
-            // Since all evaluation methods on Assert require `&mut self`, this guarantees
-            // exclusive access to `context` when the evaluator runs, so dereferencing
+            // Safety: The context is owned by Assert, which outlives the
+            // evaluator run. Since all evaluation methods on Assert
+            // require `&mut self`, this guarantees exclusive access
+            // to `context` when the evaluator runs, so dereferencing
             // this pointer is safe and does not alias.
             eval.set_context(unsafe { &*context_ptr });
         });
@@ -160,7 +162,8 @@ impl Assert {
     // signatures. The inherited methods on `starlark::assert::Assert` only
     // take `&self`, which would bypass the borrow checker and allow running
     // the evaluator while holding an active context borrow (leading to UB).
-    // Exposing them as `&mut self` methods on the wrapper statically prevents this.
+    // Exposing them as `&mut self` methods on the wrapper statically prevents
+    // this.
 
     /// Evaluates code and returns the Starlark value.
     #[track_caller]

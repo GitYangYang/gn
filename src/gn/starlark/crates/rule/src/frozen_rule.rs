@@ -118,8 +118,8 @@ where
                 .collect::<Result<Vec<_>, _>>()?;
 
             let mut cxx_target = if let Some(builtin) = self.builtin {
-                // Collect all the arguments we don't recognise and pass them to the native
-                // implementation.
+                // Collect all the arguments we don't recognise and pass them to
+                // the native implementation.
                 let kwargs: SmallMap<String, Value<'v>> = param_parser.next()?;
                 let mut child_scope = scope
                     .as_mut()
