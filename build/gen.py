@@ -7,6 +7,7 @@
 
 import argparse
 import os
+import pathlib
 import platform
 import re
 import shlex
@@ -260,6 +261,12 @@ def main(argv):
                           '`ninja -t compdb`.'))
   args_list.add('--starlark', action='store_true', default=False,
                     help='Enable (experimental) starlark integration')
+  args_list.add('--gen', default=None,
+                    metavar='SRC_DIR=OUT_DIR', dest='gen_target',
+                    help=('Generate ninja targets that invoke `gn gen` on an ' +
+                          'external repository.\n' +
+                          'Format: <src_dir>=<out_dir> ' +
+                          '(e.g. ~/chromium/src=out/Default)'))
 
   args_list.add_to_parser(parser)
   options = parser.parse_args(argv)
@@ -329,6 +336,17 @@ def GenerateLastCommitPosition(host, header):
       f.write(contents)
 
 
+USED_ENV_VARS = (
+    'AR',
+    'CFLAGS',
+    'CXX',
+    'CXXFLAGS',
+    'LD',
+    'LDFLAGS',
+    'LIBFLAGS',
+)
+
+
 def WriteGenericNinja(path, static_libraries, executables,
                       cxx, ar, ld, platform, host, options,
                       args_list, cflags=[], ldflags=[],
@@ -343,6 +361,24 @@ def WriteGenericNinja(path, static_libraries, executables,
 
   rel_self = os.path.relpath(os.path.join(SCRIPT_DIR, 'gen.py'), build_dir)
 
+<<<<<<< HEAD   (378fea5ed617c1dd2a28bbbad285f366c2ec2736 Implement rule implementation execution.)
+||||||| BASE   (f9cea148d88f2a3570fc2f81a5931f96d20194f1 Implement rule implementation execution.)
+=======
+  sys_exec = f'"{sys.executable}"' if host.is_windows() else shlex.quote(sys.executable)
+  cmd = '%s %s%s' % (sys_exec, rel_self, args)
+  explicit_env = [k for k in USED_ENV_VARS if k in os.environ]
+  if explicit_env:
+    if host.is_windows():
+      set_cmds = ['set "%s=%s"' % (k, os.environ[k].replace('$', '$$')) for k in explicit_env]
+      cmd = 'cmd.exe /s /c "%s && %s"' % (' && '.join(set_cmds), cmd)
+    else:
+      env_prefix = ' '.join(
+          '%s=%s' % (k, shlex.quote(os.environ[k]).replace('$', '$$'))
+          for k in explicit_env
+      )
+      cmd = '%s %s' % (env_prefix, cmd)
+
+>>>>>>> BRANCH (dc685a2b72b24234ba5cbc821375c3d2ac4f0409 gn edit: keep build files alive for warnings)
   ninja_header_lines = [
     'cxx = ' + cxx,
     'ar = ' + ar,
@@ -351,7 +387,13 @@ def WriteGenericNinja(path, static_libraries, executables,
     '  depth = 1',
     '',
     'rule regen',
+<<<<<<< HEAD   (378fea5ed617c1dd2a28bbbad285f366c2ec2736 Implement rule implementation execution.)
     '  command = %s %s%s' % (sys.executable, rel_self, args),
+||||||| BASE   (f9cea148d88f2a3570fc2f81a5931f96d20194f1 Implement rule implementation execution.)
+    '  command = %s ../build/gen.py%s' % (sys.executable, args),
+=======
+    '  command = ' + cmd,
+>>>>>>> BRANCH (dc685a2b72b24234ba5cbc821375c3d2ac4f0409 gn edit: keep build files alive for warnings)
     '  description = Regenerating ninja files',
     '',
     'build build.ninja: regen',
@@ -508,6 +550,7 @@ def WriteGenericNinja(path, static_libraries, executables,
               args='--diff',
               env=f'NOBUILD=1 NINJA_OUT_DIR={os.path.relpath(build_dir, REPO_ROOT)}',
           ),
+<<<<<<< HEAD   (378fea5ed617c1dd2a28bbbad285f366c2ec2736 Implement rule implementation execution.)
       ] + [
           ninja.CargoClippyTarget(
               'check_linter',
@@ -517,6 +560,21 @@ def WriteGenericNinja(path, static_libraries, executables,
           ),
       ] if options.starlark else [],
   )
+||||||| BASE   (f9cea148d88f2a3570fc2f81a5931f96d20194f1 Implement rule implementation execution.)
+=======
+      ],
+  )
+
+  if options.gen_target:
+    if '=' not in options.gen_target:
+      raise ValueError(f'Invalid --gen format: {repr(options.gen_target)}. Expected <src_dir>=<out_dir>')
+    gen_src_dir, gen_out_dir = options.gen_target.split('=', 1)
+    ninja.AddExternalGenTarget(
+      'gen',
+      pathlib.Path(os.path.expandvars(os.path.expanduser(gen_src_dir))).resolve(),
+      pathlib.Path(os.path.expandvars(gen_out_dir))
+    )
+>>>>>>> BRANCH (dc685a2b72b24234ba5cbc821375c3d2ac4f0409 gn edit: keep build files alive for warnings)
 
   with open(path, 'w') as f:
     f.write('\n'.join(ninja_header_lines))
@@ -748,6 +806,8 @@ def WriteGNNinja(path, platform, host, options, args_list):
         # Enable __cplusplus macro to report the correct C++ standard version,
         # otherwise it defaults to C++98.
         '/Zc:__cplusplus',
+        # Enable use of __VA_OPT__ in macros.
+        '/Zc:preprocessor',
         '/GR-',
         '/D_HAS_EXCEPTIONS=0',
     ])
@@ -810,6 +870,7 @@ def WriteGNNinja(path, platform, host, options, args_list):
               'src/gn/analyzer.cc',
               'src/gn/args.cc',
               'src/gn/binary_target_generator.cc',
+              'src/gn/build_file_editor.cc',
               'src/gn/build_settings.cc',
               'src/gn/builder.cc',
               'src/gn/builder_record.cc',
@@ -847,6 +908,8 @@ def WriteGNNinja(path, platform, host, options, args_list):
               'src/gn/deps_iterator.cc',
               'src/gn/desc_builder.cc',
               'src/gn/eclipse_writer.cc',
+              'src/gn/edit_subcommands.cc',
+              'src/gn/edit_command.cc',
               'src/gn/err.cc',
               'src/gn/escape.cc',
               'src/gn/exec_process.cc',
@@ -1008,6 +1071,7 @@ def WriteGNNinja(path, platform, host, options, args_list):
         'src/gn/config_unittest.cc',
         'src/gn/config_values_extractors_unittest.cc',
         'src/gn/desc_builder_unittest.cc',
+        'src/gn/edit_command_unittest.cc',
         'src/gn/escape_unittest.cc',
         'src/gn/exec_process_unittest.cc',
         'src/gn/filesystem_utils_unittest.cc',
