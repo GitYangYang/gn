@@ -13,7 +13,7 @@ use starlark::{
     values::{FrozenHeap, FrozenValue, StarlarkValue, Value},
 };
 use starlark_derive::{starlark_value, NoSerialize};
-use types::{EvaluatorContextExt, Scope};
+use types::{EvaluatorContextExt as _, Scope as _};
 
 use crate::rule::{build_signature, OutputType};
 
@@ -29,7 +29,7 @@ pub struct FrozenRule<C: EvalContextAttrExt> {
     pub(crate) implementation: FrozenValue,
     pub(crate) name: String,
     pub(crate) signature: ParametersSpec<FrozenValue>,
-    pub(crate) parent: Option<&'static FrozenRule<C>>,
+    pub(crate) parent: Option<&'static Self>,
     pub(crate) _phantom: PhantomData<C>,
 }
 
@@ -40,7 +40,7 @@ unsafe impl<C: EvalContextAttrExt> Send for FrozenRule<C> {}
 unsafe impl<C: EvalContextAttrExt> Sync for FrozenRule<C> {}
 
 unsafe impl<'v, C: EvalContextAttrExt> ProvidesStaticType<'v> for FrozenRule<C> {
-    type StaticType = FrozenRule<C>;
+    type StaticType = Self;
 }
 
 unsafe impl<'v, C: EvalContextAttrExt> starlark::values::Trace<'v> for FrozenRule<C> {

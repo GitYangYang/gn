@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-use attr::{traits::EvalContextAttrExt, TargetAttrExt, TargetRef};
+use attr::{traits::EvalContextAttrExt, TargetAttrExt, TargetRef as _};
 use starlark::{environment::Module, eval::Evaluator, values::OwnedFrozenValue};
-use types::{EvaluatorContextExt, Session};
+use types::{EvaluatorContextExt as _, Session};
 
 use crate::{Ctx, FrozenRule};
 

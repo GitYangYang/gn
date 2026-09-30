@@ -12,7 +12,7 @@ use allocative::Allocative;
 use attr::Attr;
 use starlark::{
     starlark_simple_value,
-    values::{Heap, ProvidesStaticType, StarlarkValue, Value, ValueLike},
+    values::{Heap, ProvidesStaticType, StarlarkValue, Value, ValueLike as _},
 };
 use starlark_derive::{starlark_value, NoSerialize};
 use types::{File, IPromiseToImplementStarlarkEqAndHash, Label, LabelRef, OutputType, TargetRef};
@@ -44,7 +44,7 @@ impl PartialEq for FakeTarget {
             && self.outputs == other.outputs
             && self.attrs == other.attrs
             && self.output_type == other.output_type
-            && self.rule.map(|r| r as *const _) == other.rule.map(|r| r as *const _)
+            && self.rule.map(std::ptr::from_ref) == other.rule.map(std::ptr::from_ref)
             && self.cxx_attrs.len() == other.cxx_attrs.len()
             && self.cxx_attrs.iter().all(|(k, v)| {
                 other

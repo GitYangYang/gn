@@ -12,11 +12,11 @@ use starlark::{
     eval::{Arguments, Evaluator, ParametersSpec, ParametersSpecParam},
     values::{
         Freeze, FreezeResult, Freezer, FrozenHeap, FrozenValue, FrozenValueTyped, StarlarkValue,
-        Value, ValueLike,
+        Value, ValueLike as _,
     },
 };
 use starlark_derive::{starlark_value, NoSerialize};
-use types::EvaluatorContextExt;
+use types::EvaluatorContextExt as _;
 pub use types::OutputType;
 
 use crate::frozen_rule::FrozenRule;
@@ -188,7 +188,7 @@ where
         _eval: &mut Evaluator<'v, '_, '_>,
     ) -> starlark::Result<()> {
         let signature = build_signature(variable_name, &self.schema, self.builtin.is_some());
-        let _ = self.once_named.set((variable_name.to_owned(), signature));
+        drop(self.once_named.set((variable_name.to_owned(), signature)));
         Ok(())
     }
 

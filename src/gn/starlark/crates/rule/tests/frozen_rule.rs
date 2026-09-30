@@ -8,7 +8,7 @@ use attr::{Attr, LabelOrFile};
 use rule::FrozenRule;
 use starlark::{environment::FrozenModule, values::FrozenValueTyped};
 use testutils::{Assert, FakeEvalContext, FakeTarget};
-use types::{Label, OutputType, PackageRef, Session};
+use types::{Label, OutputType, PackageRef, Session as _};
 
 fn new_assert() -> Assert {
     Assert::new_rule_assert()
