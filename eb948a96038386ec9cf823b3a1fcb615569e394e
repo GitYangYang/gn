@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ca7c0fff_524327e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:18:40Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "431ece61_fbcba805",
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "92630639_e58a921e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -58,6 +76,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "393b4ac2_5d5cd89c",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:18:40Z",
+      "side": 1,
+      "message": "Note that a SourceDir is a pointer-sized interned string, there is real benefit in using a const reference here, but I\u0027ve changed it back to it anyway.",
+      "parentUuid": "720aeb2a_86dc600c",
+      "range": {
+        "startLine": 1290,
+        "startChar": 0,
+        "endLine": 1290,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "826c35c8_107b770b",
@@ -71,6 +113,30 @@
       "writtenOn": "2026-10-01T08:41:47Z",
       "side": 1,
       "message": "Please fix this WARNING reported by autoreview issue finding: You can use a const reference here to avoid an unnecessary string copy, matching what the original code did:\n\n```cpp\nconst SourceDir\u0026 current_dir \u003d target.label().dir();\n```",
+      "range": {
+        "startLine": 1326,
+        "startChar": 0,
+        "endLine": 1326,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba26d4f2_b3f701e3",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "826c35c8_107b770b",
       "range": {
         "startLine": 1326,
         "startChar": 0,
@@ -104,6 +170,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f172b10c_bb11ddbf",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:18:40Z",
+      "side": 1,
+      "message": "Good point. Done.",
+      "parentUuid": "02dde99f_31ea919a",
+      "range": {
+        "startLine": 1360,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "422a5c62_a327edbc",
@@ -117,6 +207,30 @@
       "writtenOn": "2026-10-01T08:41:47Z",
       "side": 1,
       "message": "Please fix this WARNING reported by autoreview issue finding: Consider making this a `const SourceDir\u0026` as well.",
+      "range": {
+        "startLine": 1417,
+        "startChar": 0,
+        "endLine": 1417,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d99fa30_3b074e3b",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1417,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:18:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "422a5c62_a327edbc",
       "range": {
         "startLine": 1417,
         "startChar": 0,
