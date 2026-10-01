@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5163394_6ae33c55",
+        "filename": "src/gn/generated_file_writer.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:29:18Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: GN internal includes should use the `gn/` prefix.\n\n```suggestion\n#include \"gn/generated_file_writer.h\"\n\n#include \u003cvector\u003e\n\n#include \"base/logging.h\"\n#include \"gn/err.h\"\n#include \"gn/output_conversion.h\"\n#include \"gn/source_file.h\"\n#include \"gn/string_output_buffer.h\"\n#include \"gn/target.h\"\n#include \"gn/trace.h\"\n#include \"gn/value.h\"\n```",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "589a1dab57146d0e7da2a4d7596e478654847fe8",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1205ffdf_f588bd9f",
+        "filename": "src/gn/generated_file_writer.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:29:18Z",
+      "side": 1,
+      "message": "Include ostream?",
+      "range": {
+        "startLine": 55,
+        "startChar": 7,
+        "endLine": 55,
+        "endChar": 14
+      },
+      "revId": "589a1dab57146d0e7da2a4d7596e478654847fe8",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
