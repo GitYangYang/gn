@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0aa57bb_934d160e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T04:24:29Z",
+      "side": 1,
+      "message": "Found by AI, and required for the upcoming validations metadata walk fixes.",
+      "revId": "c87f29757ab3a58cf2b1bb5bed1837c6ee460733",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
