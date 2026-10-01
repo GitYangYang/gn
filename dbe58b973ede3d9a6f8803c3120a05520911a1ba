@@ -16,6 +16,24 @@
       "message": "Do you have some benchmark number by this optimization?",
       "revId": "dbe58b973ede3d9a6f8803c3120a05520911a1ba",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1b361ba_79fc73f6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:23:00Z",
+      "side": 1,
+      "message": "I cannot see any statistical difference with a Chromium build. For Fuchsia it is much harder to benchmark because `gn gen` keeps crashing all the time now.\n\nKeep in mind that metadata collection is done in parallel with other things, so this may not affect `gn gen` time in the current implementation. However, if I do revert this change on top of https://gn-review.googlesource.com/c/gn/+/27086, which delays metadata walks to the end of the build, I see a minor increase in Fuchsia `gn gen` time (from 18.55s to 19.56s) due to that revert, so there is that.\n\nThere are multiple other opportunities to improve metadata walks. I implemented several of them locally and will upload them after the fix. They mainly benefit the Fuchsia build though, because this is the one that needs to delay some metadata walks to the end of `gn gen`.",
+      "parentUuid": "77670d11_336d5bb1",
+      "revId": "dbe58b973ede3d9a6f8803c3120a05520911a1ba",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
