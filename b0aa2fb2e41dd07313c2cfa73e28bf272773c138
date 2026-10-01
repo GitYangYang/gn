@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d80f8108_811d260d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T13:47:37Z",
+      "side": 1,
+      "message": "mmm, something\u0027s wrong, patchset 6 is supposed to contain edits. Let me check...",
+      "revId": "b0aa2fb2e41dd07313c2cfa73e28bf272773c138",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
