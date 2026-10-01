@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "431ece61_fbcba805",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:41:47Z",
+      "side": 1,
+      "message": "Add bug for metadata fix?",
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "92630639_e58a921e",
@@ -14,6 +31,98 @@
       "writtenOn": "2026-10-01T04:26:04Z",
       "side": 1,
       "message": "This is mostly to support collect_validations_metadata more easily in future CL at https://gn-review.git.corp.google.com/c/gn/+/27085",
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "720aeb2a_86dc600c",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1290,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:41:47Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Consider passing and storing `rebase_dir` as a `const SourceDir\u0026` to avoid copying it. The caller (`Target::GetMetadata`) receives it as a const reference, and its lifetime safely spans the entire execution of `MetadataWalker`.",
+      "range": {
+        "startLine": 1290,
+        "startChar": 0,
+        "endLine": 1290,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "826c35c8_107b770b",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1326,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:41:47Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: You can use a const reference here to avoid an unnecessary string copy, matching what the original code did:\n\n```cpp\nconst SourceDir\u0026 current_dir \u003d target.label().dir();\n```",
+      "range": {
+        "startLine": 1326,
+        "startChar": 0,
+        "endLine": 1326,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02dde99f_31ea919a",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:41:47Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: This is an existing issue (not introduced by your CL), but you probably want an early `return false;` here. Otherwise, the loop will just continue, fail to find the empty label in the dependencies, and eventually overwrite `err_` with the generic \"I was expecting [empty] to be a dependency of...\" error, completely masking this canonicalization error.",
+      "range": {
+        "startLine": 1360,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 0
+      },
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "422a5c62_a327edbc",
+        "filename": "src/gn/target.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 1417,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:41:47Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Consider making this a `const SourceDir\u0026` as well.",
+      "range": {
+        "startLine": 1417,
+        "startChar": 0,
+        "endLine": 1417,
+        "endChar": 0
+      },
       "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
