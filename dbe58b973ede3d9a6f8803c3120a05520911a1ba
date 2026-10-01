@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77670d11_336d5bb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T08:26:35Z",
+      "side": 1,
+      "message": "Do you have some benchmark number by this optimization?",
+      "revId": "dbe58b973ede3d9a6f8803c3120a05520911a1ba",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
