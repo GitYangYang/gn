@@ -16,6 +16,75 @@
       "message": "I added some benchmark numbers (which show no impact on Chromium, but one for Fuchsia, which is ok for us).\n\nI don\u0027t know if Chromium depends on validation metadata collection at all. If not, this version of GN can be rolled as-is. Otherwise, an option is to make the default valud of `experimental_collect_validations_metadata` to true for safety.\n\nFor Fuchsia, we will roll the new GN binary manually along with a `.gn` change to set `experimental_collect_validations_metadata \u003d true` first. We will later introduce `collect_validations_metadata \u003d true` into the proper targets before removing this flag, which will not require touching `GN` itself. So the default value would not impact us directly.\n\nAfter all this, I\u0027d like to remove the `experimental_` flag though.",
       "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab0be35c_7a8d76df",
+        "filename": "src/gn/ninja_generated_file_target_writer.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T13:17:35Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: If `delayed_generated_file_write_ptr_` is null, the generated file is never written to disk, which would break things if this is called from a context that expects immediate writes. We should fall back to writing the file if the pointer is null:\n```cpp\n  if (target_-\u003ecollect_validations_metadata() \u0026\u0026 delayed_generated_file_write_ptr_) {\n    *delayed_generated_file_write_ptr_ \u003d true;\n  } else {\n    Err err;\n    if (!WriteGeneratedFileToDisk(target_, \u0026err)) {\n      g_scheduler-\u003eFailWithError(err);\n    }\n  }\n```",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2238f070_5e58c39d",
+        "filename": "src/gn/setup.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T13:17:35Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Please `#include \u003cfunctional\u003e` since this line uses `std::function`.",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "163c2580_1aab852b",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-01T13:17:35Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Typo: `ScoepdBufferedOutput` -\u003e `ScopedBufferedOutput`",
+      "range": {
+        "startLine": 849,
+        "startChar": 0,
+        "endLine": 849,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
