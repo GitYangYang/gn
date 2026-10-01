@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92630639_e58a921e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T04:26:04Z",
+      "side": 1,
+      "message": "This is mostly to support collect_validations_metadata more easily in future CL at https://gn-review.git.corp.google.com/c/gn/+/27085",
+      "revId": "eb948a96038386ec9cf823b3a1fcb615569e394e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
