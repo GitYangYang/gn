@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10b95c9_e27b2e29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T12:55:08Z",
+      "side": 1,
+      "message": "I added some benchmark numbers (which show no impact on Chromium, but one for Fuchsia, which is ok for us).\n\nI don\u0027t know if Chromium depends on validation metadata collection at all. If not, this version of GN can be rolled as-is. Otherwise, an option is to make the default valud of `experimental_collect_validations_metadata` to true for safety.\n\nFor Fuchsia, we will roll the new GN binary manually along with a `.gn` change to set `experimental_collect_validations_metadata \u003d true` first. We will later introduce `collect_validations_metadata \u003d true` into the proper targets before removing this flag, which will not require touching `GN` itself. So the default value would not impact us directly.\n\nAfter all this, I\u0027d like to remove the `experimental_` flag though.",
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
