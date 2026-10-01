@@ -41,6 +41,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3550cd2d_bf435cbb",
+        "filename": "src/gn/ninja_generated_file_target_writer.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T13:46:49Z",
+      "side": 1,
+      "message": "Good point. Apart from command_gen.cc, there is currently no other context where collecting validations metadata is enabled, so I changed this to a `CHECK()` instead to catch immediately if a future change would change this situation.\n\nWriting the file directly would still risk flaky runtime crashes, which are not a good thing, imho. Let me know if you disagree.",
+      "parentUuid": "ab0be35c_7a8d76df",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2238f070_5e58c39d",
@@ -64,6 +88,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6579d985_a7e09166",
+        "filename": "src/gn/setup.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T13:46:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2238f070_5e58c39d",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "163c2580_1aab852b",
@@ -77,6 +125,30 @@
       "writtenOn": "2026-10-01T13:17:35Z",
       "side": 1,
       "message": "Please fix this WARNING reported by autoreview issue finding: Typo: `ScoepdBufferedOutput` -\u003e `ScopedBufferedOutput`",
+      "range": {
+        "startLine": 849,
+        "startChar": 0,
+        "endLine": 849,
+        "endChar": 0
+      },
+      "revId": "85490c038826f8685514f93e9afcc3a9d97b330e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26ac5b70_4a588d8e",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-01T13:46:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "163c2580_1aab852b",
       "range": {
         "startLine": 849,
         "startChar": 0,
