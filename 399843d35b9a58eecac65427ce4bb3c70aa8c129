@@ -34,6 +34,24 @@
       ],
       "revId": "399843d35b9a58eecac65427ce4bb3c70aa8c129",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27bcd669_9f4ef958",
+        "filename": "infra/recipes/gn.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-10-02T05:41:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d75d8f8_de950377",
+      "revId": "399843d35b9a58eecac65427ce4bb3c70aa8c129",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
