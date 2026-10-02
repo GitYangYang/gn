@@ -936,7 +936,8 @@ const char kCheckIncludesStrict_Help[] =
     compile this target's public headers), but they are not transitively
     forwarded to dependents.
   * "deps" act as private implementation dependencies (dependencies required to
-    compile this target's sources).
+    compile this target's sources). Hard dependencies from private "deps" are
+    not forwarded to dependents of this target, improving build parallelism.
 
   When false (the default), the default loose include checking rules apply.
 
