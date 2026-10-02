@@ -53,6 +53,24 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "320f4a19_d5fa12d3",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 7
+      },
+      "lineNbr": 662,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T08:22:07Z",
+      "side": 1,
+      "message": "Good idea. Done.",
+      "parentUuid": "94bb17a2_99805d91",
+      "revId": "8cdcc6b8a4b2e0563afe22e18b453129b8685f72",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9864373_4714b977",
@@ -70,6 +88,24 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6e5ce10_27fa581e",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 7
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T08:22:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9864373_4714b977",
+      "revId": "8cdcc6b8a4b2e0563afe22e18b453129b8685f72",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c32d60da_43e3f5a4",
@@ -83,6 +119,24 @@
       "writtenOn": "2026-10-01T23:47:36Z",
       "side": 1,
       "message": "To clarify, at what rate does this test fail without your fixes?",
+      "revId": "8cdcc6b8a4b2e0563afe22e18b453129b8685f72",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79b10e82_db936a4e",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 7
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T08:22:07Z",
+      "side": 1,
+      "message": "Good point. This test crashes deterministically without the fix because here the order or Item definition is fixed by the linear / simple graph shape. I\u0027ve clarified that and added --threads\u003d4 to ensure that this doesn\u0027t depend on the number of cores of the machine running the test (the long chain of dependency is here to guarantee that at least one of the D_n dependency is not defined when A is finalized).",
+      "parentUuid": "c32d60da_43e3f5a4",
       "revId": "8cdcc6b8a4b2e0563afe22e18b453129b8685f72",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
