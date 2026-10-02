@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d75d8f8_de950377",
+        "filename": "infra/recipes/gn.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T05:31:31Z",
+      "side": 1,
+      "message": "Can we also leave link to CIPD viewer of this package?",
+      "fixSuggestions": [
+        {
+          "fixId": "0e43d311_83529f56",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "infra/recipes/gn.py",
+              "range": {
+                "startLine": 1,
+                "startChar": 0,
+                "endLine": 1,
+                "endChar": 0
+              },
+              "replacement": "    # CIPD Viewer: https://chrome-infra-packages.appspot.com/p/fuchsia/third_party/rust/host/linux-amd64/+/git_revisions:c26ce708de5d14682647895d2f3caf38f70b5aa6,3493720eca95cf844a8d7e58fdd12e0e5644e7d0\n"
+            }
+          ]
+        }
+      ],
+      "revId": "399843d35b9a58eecac65427ce4bb3c70aa8c129",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
