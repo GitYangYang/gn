@@ -149,6 +149,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce7fbb29_0616e267",
+        "filename": "src/gn/setup.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T09:46:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4887a892_b0d78bc4",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8202ba9_179b1052",
@@ -162,6 +186,30 @@
       "writtenOn": "2026-10-02T09:17:29Z",
       "side": 1,
       "message": "Please fix this WARNING reported by autoreview issue finding: Usually, headers are organized alphabetically. Consider moving this include below to match the alphabetical order of the other `gn/...` headers.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 0
+      },
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2a9ecdb_2d99b1bb",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T09:46:25Z",
+      "side": 1,
+      "message": "Done. I am surprised this wasn\u0027t handled by tools/run_formatter.sh though :)",
+      "parentUuid": "b8202ba9_179b1052",
       "range": {
         "startLine": 6,
         "startChar": 0,
