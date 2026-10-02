@@ -16,6 +16,24 @@
       "message": "I\u0027m on the fence, but this feels like an implementation detail rather than something we should explicitly document. WDYT?",
       "revId": "c1664acd6f49eabe385b34d3e8cfb7fd03b05288",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b33afb26_00040e27",
+        "filename": "src/gn/variables.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T03:24:17Z",
+      "side": 1,
+      "message": "I see, updated statement.",
+      "parentUuid": "380cd89d_3773f421",
+      "revId": "c1664acd6f49eabe385b34d3e8cfb7fd03b05288",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
