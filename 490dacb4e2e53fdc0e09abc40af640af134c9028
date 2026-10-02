@@ -16,6 +16,24 @@
       "message": "By the way, why not choose option A in design options which doesn\u0027t add new flags?\nhttps://crbug.com/gn/566346002#comment5",
       "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecdfe3e0_68f8359b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T08:38:36Z",
+      "side": 1,
+      "message": "First because we can implement it after this fix which gets rid of the runtime crashes entirely.\n\nSecond because, I don\u0027t like \"optimistic\" algorithms which can widely alter the timing of `gn gen` times. This will increase its variance, leading to surprising results when benchmarking. Results may change due to a kernel upgrade, or be widely inconsistent between different OSes.\n\nAlso, ideally, I want to get rid of the validations-collecting walks in the Fuchsia build entirely so this wouldn\u0027t be needed at all.\n\nSo I don\u0027t think it\u0027s really worth it, but it can be implemented.\n\nBesides, I have other optimizations to speed up metadata collection deterministically that I intend to push soon, if you\u0027re interested in that.",
+      "parentUuid": "4a1654b4_2b904515",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
