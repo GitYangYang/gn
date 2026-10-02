@@ -34,6 +34,24 @@
       "parentUuid": "4a1654b4_2b904515",
       "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18bab73f_6974bb94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T08:42:38Z",
+      "side": 1,
+      "message": "And another reason is that I don\u0027t think validations should be part of metadata walks by default. It can only pollute the result with unwanted data, except in rare cases. We tried to prevent this with explicit barriers, but a target doesn\u0027t know all the keys it\u0027s going to be visited with in advance, so this is very fragile (breaks easily when new types of walks are added, and can only be detected by manual review of the results, which is rarely done).\n\nThis is why we have the new `collect_validations_metadata` flag too.",
+      "parentUuid": "ecdfe3e0_68f8359b",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
