@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "380cd89d_3773f421",
+        "filename": "src/gn/variables.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-10-02T02:45:35Z",
+      "side": 1,
+      "message": "I\u0027m on the fence, but this feels like an implementation detail rather than something we should explicitly document. WDYT?",
+      "revId": "c1664acd6f49eabe385b34d3e8cfb7fd03b05288",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
