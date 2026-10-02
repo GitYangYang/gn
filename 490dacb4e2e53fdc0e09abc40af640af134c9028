@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1654b4_2b904515",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T08:28:26Z",
+      "side": 1,
+      "message": "By the way, why not choose option A in design options which doesn\u0027t add new flags?\nhttps://crbug.com/gn/566346002#comment5",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
