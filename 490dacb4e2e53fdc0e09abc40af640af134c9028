@@ -106,6 +106,70 @@
       "parentUuid": "3665d876_0e4400cc",
       "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34309ed9_d1bf2ec0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T09:17:29Z",
+      "side": 1,
+      "message": "I see. Thank you for your explanation.",
+      "parentUuid": "5a67dd62_762e0b16",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4887a892_b0d78bc4",
+        "filename": "src/gn/setup.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T09:17:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Typo: \"then call\" -\u003e \"and then call\" (or \", then call\")",
+      "range": {
+        "startLine": 73,
+        "startChar": 0,
+        "endLine": 73,
+        "endChar": 0
+      },
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8202ba9_179b1052",
+        "filename": "src/gn/setup_unittest.cc",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T09:17:29Z",
+      "side": 1,
+      "message": "Please fix this WARNING reported by autoreview issue finding: Usually, headers are organized alphabetically. Consider moving this include below to match the alphabetical order of the other `gn/...` headers.",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 0
+      },
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
