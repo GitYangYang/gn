@@ -70,6 +70,24 @@
       "parentUuid": "18bab73f_6974bb94",
       "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3665d876_0e4400cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000067
+      },
+      "writtenOn": "2026-10-02T09:08:20Z",
+      "side": 1,
+      "message": "We will probably need it for a few specific targets until we complete our Bazel migration, which will take a few quarters at least. Eventually yes, we would remove it, but we need it unfortunately.",
+      "parentUuid": "5d3e9140_dce0e62d",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
