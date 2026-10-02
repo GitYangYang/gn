@@ -24,6 +24,30 @@
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cc9097_dea4abf7",
+        "filename": "src/gn/starlark/crates/rule/src/errors.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-10-02T08:36:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35dd0edb_56983a1c",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 0
+      },
+      "revId": "0d3c294cac0cdfc855f982cf98ed8400227aa06e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd218310_cc38b1a0",
@@ -37,6 +61,30 @@
       "writtenOn": "2026-10-02T06:37:47Z",
       "side": 1,
       "message": "Please fix this WARNING reported by autoreview issue finding: It is important to validate that `name` does not contain `..` or start with `/` (or `\\\\`), otherwise it could be possible to escape the output directory and write to arbitrary locations on the file system. The `debug_assert!` in `resolve()` will be optimized out in release builds and won\u0027t prevent this.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 0
+      },
+      "revId": "0d3c294cac0cdfc855f982cf98ed8400227aa06e",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbac3b79_01a5e0ed",
+        "filename": "src/gn/starlark/crates/types/src/ctx_state.rs",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 3810482
+      },
+      "writtenOn": "2026-10-02T08:36:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd218310_cc38b1a0",
       "range": {
         "startLine": 58,
         "startChar": 0,
