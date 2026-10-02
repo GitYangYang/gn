@@ -52,6 +52,24 @@
       "parentUuid": "ecdfe3e0_68f8359b",
       "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
       "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d3e9140_dce0e62d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T09:06:17Z",
+      "side": 1,
+      "message": "I see. So you will remove metadata in validations from Fuchsia and `collect_validations_metadata` flag will also be removed?",
+      "parentUuid": "18bab73f_6974bb94",
+      "revId": "490dacb4e2e53fdc0e09abc40af640af134c9028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
     }
   ]
 }
