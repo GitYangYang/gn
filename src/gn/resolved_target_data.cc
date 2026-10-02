@@ -72,7 +72,11 @@ bool ResolvedTargetData::ForwardsHardDeps(const Target* dep) {
 // Keep in sync with NinjaTargetWriter::WriteHardDepsStampOrPhony().
 void ResolvedTargetData::ComputeHardDeps(TargetInfo* info) const {
   TargetSet all_hard_deps;
-  for (const Target* dep : info->deps.linked_deps()) {
+  base::span<const Target*> deps =
+      info->target->check_includes_strict() && !info->target->hard_dep()
+          ? info->deps.public_deps()
+          : info->deps.linked_deps();
+  for (const Target* dep : deps) {
     // Direct hard dependencies
     if (info->target->hard_dep() || dep->hard_dep()) {
       all_hard_deps.insert(dep);
