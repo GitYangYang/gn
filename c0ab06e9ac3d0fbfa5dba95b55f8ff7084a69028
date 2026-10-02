@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f18f9f_1c1cc396",
+        "filename": "src/gn/starlark/crates/rule/src/actions.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000030
+      },
+      "writtenOn": "2026-10-02T09:05:39Z",
+      "side": 1,
+      "message": "On Unix systems, `std::fs::write` overwrites the file content but preserves existing permissions. \n\nIf a rule author temporarily sets `is_executable \u003d True`, builds, and then reverts it to `False` (or removes the argument), the file will remain executable on disk. This can lead to non-deterministic build results between local environments and CI.\n\nTo ensure idempotent builds, consider setting the permissions explicitly regardless of the `is_executable` flag (e.g., `0o755` if `True`, and `0o644` if `False`).",
+      "range": {
+        "startLine": 135,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 0
+      },
+      "revId": "c0ab06e9ac3d0fbfa5dba95b55f8ff7084a69028",
+      "serverId": "c360c8e5-7aa8-3905-a7a0-810934766dac"
+    }
+  ]
+}
